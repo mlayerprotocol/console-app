@@ -105,3 +105,4 @@ export const MIDDLEWARE_HTTP_URLS = {
   },
 };
 
+export const ZERO_ADDRESS = "0x0000000000000000000000000000";

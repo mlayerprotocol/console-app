@@ -30,6 +30,7 @@ import {
   Storage,
   VALIDATOR_PUBLIC_KEY,
   WALLET_ACCOUNTS_STORAGE_KEY,
+  ZERO_ADDRESS,
 } from "@/utils";
 import {
   Utils,
@@ -580,9 +581,9 @@ export const WalletContextProvider = ({
     ]);
   }, [agents, authenticationList, selectedSubnetId]);
   useEffect(() => {
-    if (!connectedWallet) return;
-    const account = walletAccounts?.[connectedWallet]?.[0];
-    if (!account) return;
+    const account =
+      walletAccounts?.[connectedWallet ?? ""]?.[0] ?? ZERO_ADDRESS;
+    if (!connectedWallet && !account) return;
     makeRequest(
       `${MIDDLEWARE_HTTP_URLS.account.url}/${Address.fromString(
         account
