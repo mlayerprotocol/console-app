@@ -1378,17 +1378,11 @@ export const WalletContextProvider = ({
           signatureResp.data ?? ""
         );
       }
-<<<<<<< HEAD
- 
-      
+
       if (!signatureResp) {
         setLoaders((old) => ({ ...old, createSubnet: true }));
         return;
       }
-=======
-
-      if (!signatureResp) return;
->>>>>>> 04d7884faf922746172f2ae25f201d5042034aaa
       payload.data = subNetwork;
       console.log("Payload", JSON.stringify(payload.asPayload()));
 
