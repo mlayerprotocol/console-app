@@ -53,10 +53,10 @@ import {
   MemberMessageEventType,
   ChainId,
   Device,
-}  from "@mlayerprotocol/core";
+} from "@mlayerprotocol/core";
 
 import { notification } from "antd";
-import { RESTProvider }  from "@mlayerprotocol/core";
+import { RESTProvider } from "@mlayerprotocol/core";
 import { TopicListModel } from "@/model/topic";
 import { AuthenticationListModel } from "@/model/authentications/list";
 import { BlockStatsListModel } from "@/model/block-stats";
@@ -321,6 +321,14 @@ export const WalletContextProvider = ({
     }
     setWalletAccounts((old) => {
       return { ...old, wagmi: [wagmiAddress] };
+    });
+    makeRequest(MIDDLEWARE_HTTP_URLS.connect.url, {
+      method: MIDDLEWARE_HTTP_URLS.claim.method,
+      body: JSON.stringify({
+        account: Address.fromString(wagmiAddress ?? "").toAddressString(),
+      }),
+    }).then((b) => {
+      setPointToggleGroup((old) => !old);
     });
   }, [wagmiAddress]);
 
@@ -1235,7 +1243,10 @@ export const WalletContextProvider = ({
     setLoaders((old) => ({ ...old, sendMessage: false }));
   };
 
-  const signEth: (message: string | { raw: `0x${string}` }, signer: string) => Promise<{
+  const signEth: (
+    message: string | { raw: `0x${string}` },
+    signer: string
+  ) => Promise<{
     data?: string;
     error?: string;
     variables: any;
@@ -1344,7 +1355,7 @@ export const WalletContextProvider = ({
         identifier: `${subNetwork.reference}`,
         hash: `${hash}`,
       }).replace(/\\s+/g, "");
-      console.log("SUBNETSIGNATURE", message)
+      console.log("SUBNETSIGNATURE", message);
       let signatureResp: any;
       if (connectedWallet == "keplr") {
         signatureResp = await window.keplr.signArbitrary(
@@ -1360,19 +1371,24 @@ export const WalletContextProvider = ({
       } else {
         // const msgHash = Utils.keccak256Hash(Buffer.from(message));
         signatureResp = await signEth(message, account);
-        
+
         subNetwork.signatureData = new SignatureData(
           "eth",
           signatureResp.variables.account,
           signatureResp.data ?? ""
         );
       }
+<<<<<<< HEAD
  
       
       if (!signatureResp) {
         setLoaders((old) => ({ ...old, createSubnet: true }));
         return;
       }
+=======
+
+      if (!signatureResp) return;
+>>>>>>> 04d7884faf922746172f2ae25f201d5042034aaa
       payload.data = subNetwork;
       console.log("Payload", JSON.stringify(payload.asPayload()));
 
