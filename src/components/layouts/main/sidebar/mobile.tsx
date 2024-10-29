@@ -47,7 +47,7 @@ export const AppAsideMobile = (props: AppAsideMobileProps) => {
         className="w-svw h-svh grid  grid-cols-3"
       >
         <div className="bg-secondaryBg px-7 py-20 flex flex-col h-full col-span-2">
-          {!connectedWallet && (
+          {!(connectedWallet && walletAccounts[connectedWallet]?.[0]) && (
             <MotionButton
               type="primary"
               shape="round"
@@ -65,7 +65,7 @@ export const AppAsideMobile = (props: AppAsideMobileProps) => {
             </MotionButton>
           )}
 
-          {connectedWallet && (
+          {connectedWallet && walletAccounts[connectedWallet]?.[0] && (
             <motion.a
               initial={{ opacity: 0, x: 40 }}
               animate={{ opacity: 1, x: 0 }}
