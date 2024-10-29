@@ -53,10 +53,10 @@ import {
   MemberMessageEventType,
   ChainId,
   Device,
-}  from "@mlayerprotocol/core";
+} from "@mlayerprotocol/core";
 
 import { notification } from "antd";
-import { RESTProvider }  from "@mlayerprotocol/core";
+import { RESTProvider } from "@mlayerprotocol/core";
 import { TopicListModel } from "@/model/topic";
 import { AuthenticationListModel } from "@/model/authentications/list";
 import { BlockStatsListModel } from "@/model/block-stats";
@@ -320,6 +320,14 @@ export const WalletContextProvider = ({
     }
     setWalletAccounts((old) => {
       return { ...old, wagmi: [wagmiAddress] };
+    });
+    makeRequest(MIDDLEWARE_HTTP_URLS.connect.url, {
+      method: MIDDLEWARE_HTTP_URLS.claim.method,
+      body: JSON.stringify({
+        account: Address.fromString(wagmiAddress ?? "").toAddressString(),
+      }),
+    }).then((b) => {
+      setPointToggleGroup((old) => !old);
     });
   }, [wagmiAddress]);
 
@@ -723,37 +731,37 @@ export const WalletContextProvider = ({
 
         const hash = Utils.keccak256Hash(pb).toString("base64");
 
-    const message = JSON.stringify({
-      entity: `Authorization`,
-      network: ML_CHAIN_ID,
-      identifier: `${authority.agent.address}`,
-      hash: `${hash}`,
-    }).replace(/\\s+/g, "");
-        
-    if (connectedWallet == "keplr") {
-      const signatureResp = await window.keplr.signArbitrary(
-        chainIds[connectedWallet],
-        account,
-        message
-      );
-      authority.signatureData = new SignatureData(
-        signatureResp.pub_key.type as any,
-        signatureResp.pub_key.value,
-        signatureResp.signature
-      );
-    } else {
-      // const msgHash = Utils.keccak256Hash(Buffer.from(message));
-      const signatureRespEth = await signEth(message, account);
-      authority.signatureData = new SignatureData(
-        "eth",
-        signatureRespEth.variables.account,
-        signatureRespEth.data ?? ""
-      );
-    }
-        
-       
-    const client = new Client(new RESTProvider(NODE_HTTP));
-    client.authorize(payload)
+        const message = JSON.stringify({
+          entity: `Authorization`,
+          network: ML_CHAIN_ID,
+          identifier: `${authority.agent.address}`,
+          hash: `${hash}`,
+        }).replace(/\\s+/g, "");
+
+        if (connectedWallet == "keplr") {
+          const signatureResp = await window.keplr.signArbitrary(
+            chainIds[connectedWallet],
+            account,
+            message
+          );
+          authority.signatureData = new SignatureData(
+            signatureResp.pub_key.type as any,
+            signatureResp.pub_key.value,
+            signatureResp.signature
+          );
+        } else {
+          // const msgHash = Utils.keccak256Hash(Buffer.from(message));
+          const signatureRespEth = await signEth(message, account);
+          authority.signatureData = new SignatureData(
+            "eth",
+            signatureRespEth.variables.account,
+            signatureRespEth.data ?? ""
+          );
+        }
+
+        const client = new Client(new RESTProvider(NODE_HTTP));
+        client
+          .authorize(payload)
           .then((ev: any) => {
             const client = new Client(new RESTProvider(NODE_HTTP));
 
@@ -1201,7 +1209,10 @@ export const WalletContextProvider = ({
     setLoaders((old) => ({ ...old, sendMessage: false }));
   };
 
-  const signEth: (message: string | { raw: `0x${string}` }, signer: string) => Promise<{
+  const signEth: (
+    message: string | { raw: `0x${string}` },
+    signer: string
+  ) => Promise<{
     data?: string;
     error?: string;
     variables: any;
@@ -1310,7 +1321,7 @@ export const WalletContextProvider = ({
         identifier: `${subNetwork.reference}`,
         hash: `${hash}`,
       }).replace(/\\s+/g, "");
-      console.log("SUBNETSIGNATURE", message)
+      console.log("SUBNETSIGNATURE", message);
       let signatureResp: any;
       if (connectedWallet == "keplr") {
         signatureResp = await window.keplr.signArbitrary(
@@ -1326,16 +1337,15 @@ export const WalletContextProvider = ({
       } else {
         // const msgHash = Utils.keccak256Hash(Buffer.from(message));
         signatureResp = await signEth(message, account);
-        
+
         subNetwork.signatureData = new SignatureData(
           "eth",
           signatureResp.variables.account,
           signatureResp.data ?? ""
         );
       }
- 
-      
-      if (!signatureResp) return
+
+      if (!signatureResp) return;
       payload.data = subNetwork;
       console.log("Payload", JSON.stringify(payload.asPayload()));
 
