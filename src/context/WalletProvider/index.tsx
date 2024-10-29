@@ -583,7 +583,7 @@ export const WalletContextProvider = ({
   useEffect(() => {
     const account =
       walletAccounts?.[connectedWallet ?? ""]?.[0] ?? ZERO_ADDRESS;
-    if (!connectedWallet && !account) return;
+    // if (!connectedWallet && !account) return;
     makeRequest(
       `${MIDDLEWARE_HTTP_URLS.account.url}/${Address.fromString(
         account
