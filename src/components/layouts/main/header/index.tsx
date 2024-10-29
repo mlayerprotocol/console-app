@@ -23,6 +23,7 @@ import { AppContext, ThemeContext, WalletContext } from "@/context";
 import { NETWORK, clearSessionStorage, shorternAddress } from "@/utils";
 import { removeAuthData } from "@/redux/slices";
 import * as HeroIcons from "@heroicons/react/24/solid";
+import { useDisconnect, } from "wagmi";
 // import { setToken } from "@/redux/slices";
 
 const MotionButton = motion(Button);
@@ -46,6 +47,8 @@ export const AppHeader = (props: AppHeaderProps) => {
   // const [showMobileMenu, setShowMobileMenu] = useState<boolean>(false);
   const { initialLoading } = useContext(AppContext);
   const { themeType, toggleTheme } = useContext(ThemeContext);
+  const { disconnect } = useDisconnect()
+
   const {
     connectedWallet,
     walletAccounts,
@@ -61,6 +64,7 @@ export const AppHeader = (props: AppHeaderProps) => {
     clearSessionStorage();
     dispatch(removeAuthData());
     disconnectKeplr?.();
+    disconnect();
   };
 
   let userProfileItem: MenuProps["items"] = [
