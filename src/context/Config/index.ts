@@ -10,16 +10,17 @@ export const appUrl: string =
 
 export const metadata = {
   name: 'mlayerStudio',
-  description: 'MLayer web3 connector',
+  description: 'MLayer studi app',
   url: appUrl, // origin must match your domain & subdomain
   icons: ['/logo.png'],
 };
 
 export const chains = [base, baseSepolia] as const;
-export const wagmiConfig = defaultWagmiConfig({
+export const wagmiConfig = createConfig({
   chains,
-  projectId: wagmiProjectId,
-  metadata,
+  //  projectId: wagmiProjectId,
+  // metadata,
+  ssr: false,
   storage: createStorage({
     storage: cookieStorage,
   }),

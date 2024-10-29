@@ -46,7 +46,7 @@ export const WalletConnect = (props: WalletConnectProps) => {
     >
       <Button
         onClick={() => {
-          open();
+          open().catch(e=>console.log("OPENERROR",e));
           onSelect?.("", "");
         }}
         loading={loadingWalletConnections["wagmi"]}

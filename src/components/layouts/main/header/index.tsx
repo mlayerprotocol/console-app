@@ -66,7 +66,7 @@ export const AppHeader = (props: AppHeaderProps) => {
     disconnectKeplr?.();
     disconnect();
   };
-
+console.log({connectedWallet, accounts: walletAccounts})
   let userProfileItem: MenuProps["items"] = [
     {
       key: "2",
@@ -91,14 +91,14 @@ export const AppHeader = (props: AppHeaderProps) => {
     });
   }
   userProfileItem = userProfileItem.concat([
-    {
-      icon: <HeroIcons.Cog8ToothIcon className="ml-2 h-[20px]" />,
-      label: <span className="font-medium text-base ml-2">Switch Wallet</span>,
-      key: "3",
-      onClick: () => {
-        setShowAuthenticationModal((old) => !old);
-      },
-    },
+    // {
+    //   icon: <HeroIcons.Cog8ToothIcon className="ml-2 h-[20px]" />,
+    //   label: <span className="font-medium text-base ml-2">Switch Wallet</span>,
+    //   key: "3",
+    //   onClick: () => {
+    //     setShowAuthenticationModal((old) => !old);
+    //   },
+    // },
     {
       label: (
         <span className="font-medium text-base ml-2 text-[#FDA29B]">
@@ -109,7 +109,6 @@ export const AppHeader = (props: AppHeaderProps) => {
       onClick: handleLogout,
     },
   ]);
-  console.log({ walletAccounts, connectedWallet });
   return (
     <>
       <header className="sticky top-0 flex flex-col  backdrop-blur-xl z-50 items-end ">

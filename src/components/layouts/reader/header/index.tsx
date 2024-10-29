@@ -11,7 +11,6 @@ import {
 import Image from "next/image";
 import React, { useContext, useState } from "react";
 import { UserOutlined } from "@ant-design/icons";
-import { MainAuth } from "@/components";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { useAppDispatch, useAppSelector } from "@/redux/app";

@@ -18,9 +18,11 @@ import {
   BsPlusCircleFill,
 } from "react-icons/bs";
 import { MdCheckBox } from "react-icons/md";
+import ConnectWalletGuard from "@/components/layouts/guards/connectwalletguard";
 
 const SubnetPage = () => {
   const router = useRouter();
+
   const [showCreateSubnetModal, setShowCreateSubnetModal] =
     useState<boolean>(false);
   const {
@@ -30,6 +32,8 @@ const SubnetPage = () => {
     loaders,
   } = useContext(WalletContext);
   return (
+    <>
+    <ConnectWalletGuard>
     <div className="flex flex-col gap-4 min-h-[70vh] my-16 md:my-20 mx-5 md:mx-10">
       <div className="flex gap-4 items-center mb-12 flex-wrap">
         <div className="flex gap-2">
@@ -125,7 +129,9 @@ const SubnetPage = () => {
           <span>Create New Subnet</span>
         </div>
       </div>
-    </div>
+      </div>
+      </ConnectWalletGuard>
+      </>
   );
 };
 

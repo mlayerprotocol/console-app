@@ -29,7 +29,7 @@ export const Agents = (props: AgentsProps) => {
     generateAgent,
     loaders,
   } = useContext(WalletContext);
-
+console.log("COMBINEAGENT", combinedAgents.length)
   const dataSource = useMemo(() => {
     return combinedAgents.map((kp: AddressData, index) => {
       // console.log(index, kp.address, authenticationData);
@@ -153,7 +153,7 @@ export const Agents = (props: AgentsProps) => {
           <span className=" dark:text-white text-sm">Agents</span>
           <HeroIcons.InformationCircleIcon className="h-[16px] dark:!text-white " />
         </div>
-        <span className="dark:text-white text-sm bg-secondaryBg p-3 max-w-[415px]">
+        <span className="dark:text-slate-400 text-sm bg-secondaryBg p-3 max-w-[415px]">
           Agents act on behalf of Accounts on the mLayer network. This is
           important for security and flexibility. For example, a compromised
           agent can quickly be deauthorized to prevent further attack.{" "}

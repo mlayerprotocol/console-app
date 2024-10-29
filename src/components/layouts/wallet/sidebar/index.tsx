@@ -41,7 +41,7 @@ export const SubnetAside = (props: SubnetAsideProps) => {
         <span>Topics</span>
       </Link>
 
-      {!process.env.NEXT_PUBLIC_HIDE_AIRDROP && (
+ 
         <Link
           className={`${
             pathname.indexOf(`/subnet/${selectedSubnetId}/settings`) == 0
@@ -53,7 +53,7 @@ export const SubnetAside = (props: SubnetAsideProps) => {
           <HeroIcons.Cog8ToothIcon className="h-[20px]" />
           <span>Settings</span>
         </Link>
-      )}
+     
     </div>
   );
 };
