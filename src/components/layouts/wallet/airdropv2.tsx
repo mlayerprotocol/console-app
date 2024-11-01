@@ -409,7 +409,7 @@ export const AirDropv2 = (props: AirDropv2Props) => {
         <div className="flex my-8  dark:text-white justify-between bg-[url('/background_star.png')] p-5 rounded-lg">
           <span>Total Points Earned</span>
           <span className="text-4xl">
-            {pointsDetail?.data?.account.totalPoints ?? "---"}
+            {pointsDetail?.data?.account?.totalPoints ?? "---"}
           </span>
         </div>
 
