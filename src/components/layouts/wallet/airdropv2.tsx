@@ -31,6 +31,7 @@ import { BsBadge3D } from "react-icons/bs";
 import Image from "next/image";
 import { MdMenu } from "react-icons/md";
 import { LeaderboardData } from "@/model/leaderboard";
+import { Activity } from "@/model/points/by-category";
 interface AirDropv2Props {
   onSuccess?: (values: any) => void;
   handleCreateAccount?: () => void;
@@ -57,8 +58,10 @@ export const AirDropv2 = (props: AirDropv2Props) => {
     connectedWallet,
     setPointToggleGroup,
   } = useContext(WalletContext);
-  const { selectedScreen, tabsDetails, setShowMobileMenu } =
-    useContext(AirDropContext);
+
+  const selectedScreen = searchParams.get("tab") ?? 0;
+
+  const { tabsDetails, setShowMobileMenu } = useContext(AirDropContext);
 
   // const tabsDetails = useMemo(() => {
   //   return pointsCategoryList?.data.map(
@@ -75,17 +78,15 @@ export const AirDropv2 = (props: AirDropv2Props) => {
     // }));
     const _points = pointsCategoryList?.data ?? [];
     const _activities = _points.map((el) => el.activities).flat();
-    return ACTIVITIES.map((activity) => {
-      const _pt = _activities
-        ?.flat()
-        .find((e) => e.activityName == activity.title);
+    return _activities.map((activity) => {
       return {
         ...activity,
-        title: activity.title,
-        point: `${_pt?.points ?? "..."} points`,
-        amount: _pt?.claimStatus?.[0]?.points ?? "...",
-        _pt,
-        meta: _points.find((e) => e.meta.index === _pt?.category.index),
+        title: activity.activityName,
+        point: `${activity?.points ?? "..."} points`,
+        amount: activity?.claimStatus?.[0]?.points ?? "...",
+        activity,
+        actionText: "" as undefined | string,
+        meta: _points.find((e) => e.meta.index === activity?.category.index),
       };
     });
   }, [pointsCategoryList]);
@@ -133,15 +134,14 @@ export const AirDropv2 = (props: AirDropv2Props) => {
       point: string;
       amount: string | number;
       actionText?: undefined;
-      username?: undefined;
-      _pt: PointData | undefined;
+      activity: Activity;
     },
     pointsDetail: PointDetailModel | undefined,
     { alwaysConnect }: { alwaysConnect?: boolean } = {
       alwaysConnect: false,
     }
   ) => {
-    switch (obj._pt?.type) {
+    switch (obj.activity?.type) {
       // case "Follow @mlayer on X":
       case "x-follow":
         if (pointsDetail?.data?.account?.socials?.twitter && !alwaysConnect) {
@@ -150,9 +150,9 @@ export const AirDropv2 = (props: AirDropv2Props) => {
               makeRequest(MIDDLEWARE_HTTP_URLS.twitter.verify.url, {
                 method: MIDDLEWARE_HTTP_URLS.twitter.verify.method,
                 body: JSON.stringify({
-                  projectId: obj._pt?.projectId,
-                  activityId: obj._pt?.id,
-                  username: obj.username,
+                  projectId: obj.activity?.projectId,
+                  activityId: obj.activity?.id,
+                  username: obj.activity.data,
                 }),
                 headers: {
                   "x-signed-data": pointsDetail.data.token,
@@ -163,7 +163,10 @@ export const AirDropv2 = (props: AirDropv2Props) => {
             };
             setOnFocusCb(() => cb);
             // setTimeout(cb, 10000);
-            window.open(`${FOLLOW_TWITTER_HTTP}/${obj.username}`, "_blank");
+            window.open(
+              `${FOLLOW_TWITTER_HTTP}/${obj.activity?.data}`,
+              "_blank"
+            );
           }
         } else {
           if (window != null) {
@@ -172,7 +175,7 @@ export const AirDropv2 = (props: AirDropv2Props) => {
               await makeRequest(MIDDLEWARE_HTTP_URLS.twitter.connect.url, {
                 method: MIDDLEWARE_HTTP_URLS.twitter.connect.method,
                 body: JSON.stringify({
-                  projectId: obj._pt?.projectId,
+                  projectId: obj.activity?.projectId,
                   path: window.location.href,
                 }),
                 headers: {
@@ -200,9 +203,9 @@ export const AirDropv2 = (props: AirDropv2Props) => {
               makeRequest(MIDDLEWARE_HTTP_URLS.discord.verify.url, {
                 method: MIDDLEWARE_HTTP_URLS.discord.verify.method,
                 body: JSON.stringify({
-                  projectId: obj._pt?.projectId,
-                  activityId: obj._pt?.id,
-                  username: obj.username,
+                  projectId: obj.activity?.projectId,
+                  activityId: obj.activity?.id,
+                  username: obj.activity?.data,
                 }),
                 headers: {
                   "x-signed-data": pointsDetail.data.token,
@@ -220,7 +223,7 @@ export const AirDropv2 = (props: AirDropv2Props) => {
             await makeRequest(MIDDLEWARE_HTTP_URLS.discord.connect.url, {
               method: MIDDLEWARE_HTTP_URLS.discord.connect.method,
               body: JSON.stringify({
-                projectId: obj._pt?.projectId,
+                projectId: obj.activity?.projectId,
                 path: window.location.href,
               }),
               headers: {
@@ -261,20 +264,20 @@ export const AirDropv2 = (props: AirDropv2Props) => {
       point: string;
       amount: string | number;
       actionText?: undefined;
-      _pt: PointData | undefined;
+      activity: Activity;
     },
     pointsDetail: PointDetailModel | undefined
   ): string => {
-    switch (obj._pt?.type) {
+    switch (obj.activity?.type) {
       case "x-follow":
         // case "Follow @rulerOfCode on X":
         if (pointsDetail?.data?.account?.socials?.twitter) {
-          return "Click to follow @" + obj._pt?.data?.toLocaleLowerCase();
+          return "Click to follow @" + obj.activity?.data?.toLocaleLowerCase();
         }
         break;
       case "discord-follow":
         if (pointsDetail?.data?.account?.socials?.discord) {
-          return "Click to join @" + obj._pt?.data?.toLocaleLowerCase();
+          return "Click to join @" + obj.activity?.data?.toLocaleLowerCase();
         }
         break;
     }
@@ -288,11 +291,11 @@ export const AirDropv2 = (props: AirDropv2Props) => {
       point: string;
       amount: string | number;
       actionText?: undefined;
-      _pt: PointData | undefined;
+      activity: Activity;
     },
     pointsDetail: PointDetailModel | undefined
   ): string => {
-    switch (obj._pt?.type) {
+    switch (obj.activity?.type) {
       case "x-follow":
         // case "Follow @rulerOfCode on X":
         if (pointsDetail?.data?.account?.socials?.twitter) {
@@ -312,10 +315,27 @@ export const AirDropv2 = (props: AirDropv2Props) => {
   const activitiesComponents = useMemo(() => {
     return activites.map((e, i) => {
       let showCheck = false;
+      let isALink =
+        e.type == "generic" && e.activity.data?.indexOf("http") == 0;
       if (i < 4 && parseInt(e.amount.toString()) > 0) {
         showCheck = true;
       }
+      let actionText;
 
+      if (e.type == "x-follow") {
+        actionText = "Connect your X Account";
+      }
+      if (e.type == "discord-follow") {
+        actionText = "Connect your Discord Account";
+      }
+
+      if (e.type == "referral") {
+        actionText = "Get referral link";
+      }
+      if (isALink) {
+        actionText = e.activity.data ?? "";
+      }
+      e = { ...e, actionText: actionText };
       return {
         meta: e.meta,
         component: (
@@ -328,39 +348,49 @@ export const AirDropv2 = (props: AirDropv2Props) => {
                     <HeroIcons.CheckCircleIcon className="h-[20px] !text-green-500" />
                   )}
                 </span>
-                <span>
-                  {e.actionText && (
+                {isALink ? (
+                  <a
+                    target="_blank"
+                    href={actionText}
+                    className="text-sm text-blue-500 cursor-pointer"
+                  >
+                    Proceed
+                  </a>
+                ) : (
+                  <span>
+                    {actionText && (
+                      <span
+                        onClick={() => {
+                          handleAction(e as any, pointsDetail);
+                        }}
+                        className="text-sm text-blue-500 cursor-pointer"
+                      >
+                        {loaders[e.title] ? (
+                          <Spin />
+                        ) : (
+                          renderSubtext(e as any, pointsDetail)
+                        )}
+                      </span>
+                    )}{" "}
                     <span
                       onClick={() => {
-                        handleAction(e as any, pointsDetail);
+                        handleAction(e as any, pointsDetail, {
+                          alwaysConnect: true,
+                        });
                       }}
-                      className="text-sm text-blue-500 cursor-pointer"
+                      className="text-sm text-green-500 cursor-pointer"
                     >
                       {loaders[e.title] ? (
                         <Spin />
                       ) : (
-                        renderSubtext(e as any, pointsDetail)
+                        renderUserName(e as any, pointsDetail)
                       )}
                     </span>
-                  )}{" "}
-                  <span
-                    onClick={() => {
-                      handleAction(e as any, pointsDetail, {
-                        alwaysConnect: true,
-                      });
-                    }}
-                    className="text-sm text-green-500 cursor-pointer"
-                  >
-                    {loaders[e.title] ? (
-                      <Spin />
-                    ) : (
-                      renderUserName(e as any, pointsDetail)
-                    )}
                   </span>
-                </span>
+                )}
               </div>
               <span className="dark:text-white">{`${e.point}${
-                e._pt?.unit ? ` per ${e._pt?.unit}` : ""
+                e?.unit ? `/${e?.unit}` : ""
               }`}</span>
               <span className="dark:text-white text-2xl ml-auto">
                 {e.amount}
@@ -384,15 +414,7 @@ export const AirDropv2 = (props: AirDropv2Props) => {
       // transition={{ duration: 1, delay: 1 }}
     >
       <div className="w-full">
-        <div
-          onClick={() => {
-            setShowMobileMenu?.((old) => !old);
-          }}
-          className="h-12 w-12 bg-secondary rounded-full border border-borderColor lg:hidden flex items-center justify-center cursor-pointer mr-auto "
-        >
-          <MdMenu color="#2F5ED2" className="!opacity-100" size={20} />
-        </div>
-        <div className="max-w-[800px] flex my-2 mx-7 flex-col dark:text-white">
+        <div className="max-w-[800px] flex  mx-7 flex-col dark:text-white">
           <span className="">Welcome to the mLayer Airdrop Campaign</span>
           <span className="text-sm">
             Complete the following activities to earn points towards our
@@ -406,17 +428,26 @@ export const AirDropv2 = (props: AirDropv2Props) => {
             </a>
           </span>
         </div>
+        <div
+          onClick={() => {
+            setShowMobileMenu?.((old) => !old);
+          }}
+          className=" mt-4 h-12 w-full bg-secondary rounded border border-borderColor lg:hidden flex items-center justify-between gap-2 cursor-pointer px-4 "
+        >
+          <span>Select Category</span>
+          <MdMenu color="#2F5ED2" className="!opacity-100" size={20} />
+        </div>
         <div className="flex my-8  dark:text-white justify-between bg-[url('/background_star.png')] p-5 rounded-lg">
           <span>Total Points Earned</span>
           <span className="text-4xl">
-            {pointsDetail?.data?.account.totalPoints ?? "---"}
+            {pointsDetail?.data?.account?.totalPoints ?? "---"}
           </span>
         </div>
 
         <div className="flex flex-wrap justify-center lg:grid grid-cols-12 gap-14">
           <div className="lg:col-span-8">
             {tabsDetails?.map((el, index) => {
-              if (selectedScreen != index) {
+              if (selectedScreen != index.toString()) {
                 return <></>;
               }
               return (
@@ -483,62 +514,6 @@ export const AirDropv2 = (props: AirDropv2Props) => {
     </motion.div>
   );
 };
-
-const ACTIVITIES = [
-  {
-    title: "Connect Wallet",
-    point: "3 points",
-    amount: "3",
-  },
-
-  {
-    title: "Follow @mlayer on X",
-    point: "6 points",
-    amount: "0",
-    actionText: "Connect your X Account",
-    username: "mlayerprotocol",
-  },
-  {
-    title: "Follow @mlayer on Discord",
-    point: "6 points",
-    amount: "0",
-    actionText: "Connect your Discord Account",
-    username: "shogun",
-  },
-  {
-    title: "Follow @rulerOfCode on X",
-    point: "6 points",
-    amount: "0",
-    actionText: "Connect your X Account",
-    username: "rulerOfCode",
-  },
-  {
-    title: "Referrals",
-    point: "50 points/downline",
-    amount: "30",
-    actionText: "Get referral link",
-  },
-  {
-    title: "Authorize Agent",
-    point: "3 points",
-    amount: "6",
-  },
-  {
-    title: "Create Topic",
-    point: "3 points",
-    amount: "6",
-  },
-  {
-    title: "Join Topic",
-    point: "4 points",
-    amount: "9",
-  },
-  {
-    title: "Send Message To Topic",
-    point: "3 points",
-    amount: "23",
-  },
-];
 
 const columns: ColumnsType<LeaderboardData> = [
   {
