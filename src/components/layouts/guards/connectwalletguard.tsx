@@ -3,8 +3,8 @@ import React from "react";
 import { useAccount } from "wagmi";
 
 import { useWeb3Modal } from "@web3modal/wagmi/react";
-import { toast } from "sonner";
-import { Button, Card } from "antd";
+
+import { Button, Card, notification } from "antd";
 
 export default function ConnectWalletGuard({
   children,
@@ -32,11 +32,11 @@ export default function ConnectWalletGuard({
               onClick={() =>
                 open().catch((err) => {
                   console.error("Failed to connect wallet", err);
-                  toast.error("Failed to connect wallet");
+                  notification.error({ message: "Failed to connect wallet" });
                 })
               }
-                        type="default"
-                          shape="round"
+              type="default"
+              shape="round"
             >
               Connect Wallet
             </Button>
