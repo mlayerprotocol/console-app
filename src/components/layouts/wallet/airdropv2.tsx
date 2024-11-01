@@ -91,8 +91,8 @@ export const AirDropv2 = (props: AirDropv2Props) => {
   }, [pointsCategoryList]);
 
   useEffect(() => {
-    const referrer = searchParams.get("referrer");
-    console.log({ referrer });
+    const referrer = searchParams.get("uid");
+   
     if (referrer && connectedWallet) {
       //
       makeRequest(MIDDLEWARE_HTTP_URLS.connect.url, {
@@ -243,7 +243,7 @@ export const AirDropv2 = (props: AirDropv2Props) => {
           // setLoaders((old) => ({ ...old, [obj.title]: true }));
           if (window != null) {
             navigator.clipboard.writeText(
-              `${window.location.href}?referrer=${pointsDetail?.data?.account?.socials?.twitter}`
+              `${window.location.href.split('?')[0]}?uid=${pointsDetail?.data?.account?.socials?.twitter}`
             );
             notification.success({ message: "Referral Link has been copied" });
           }
