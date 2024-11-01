@@ -11,7 +11,7 @@ import {
 import * as stargate from "@cosmjs/stargate";
 import { MetaMaskProvider, useSDK } from "@metamask/sdk-react";
 
-import { createWeb3Modal, defaultWagmiConfig } from "@web3modal/wagmi/react";
+import { createWeb3Modal } from "@web3modal/wagmi/react";
 
 import {
   CONNECTED_WALLET_STORAGE_KEY,
@@ -67,12 +67,18 @@ import { SubnetData, SubnetListModel } from "@/model/subnets";
 import { PointListModel } from "@/model/points";
 import { PointDetailModel } from "@/model/points/detail";
 import { SubscriberListModel } from "@/model/subscribers";
-import { cookieStorage, createStorage, useAccount, useSignMessage, WagmiProvider } from "wagmi";
+import {
+  cookieStorage,
+  createStorage,
+  useAccount,
+  useSignMessage,
+  WagmiProvider,
+} from "wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { chains, metadata, wagmiConfig, wagmiProjectId } from "../Config";
 import { LeaderboardPointListModel } from "@/model/leaderboard";
 import { PointByCategoryModel } from "@/model/points/by-category";
-import { useParams } from 'next/navigation'
+import { useParams } from "next/navigation";
 
 // import { Authorization } from "@mlayerprotocol/core/src/entities";
 // const { Authorization } = Entities;
@@ -334,15 +340,15 @@ export const WalletContextProvider = ({
   }, [wagmiAddress]);
 
   useEffect(() => {
-    const subAgent = agents.find(d => d.subnetId == selectedSubnetId);
-    console.log("SUBNETAGENT", subAgent, selectedAgent)
+    const subAgent = agents.find((d) => d.subnetId == selectedSubnetId);
+    console.log("SUBNETAGENT", subAgent, selectedAgent);
     if (subAgent) {
-      const sel = agents.find(d => d.address == selectedAgent);
+      const sel = agents.find((d) => d.address == selectedAgent);
       if (sel?.subnetId != selectedSubnetId) {
         setSelectedAgent(subAgent.address);
       }
     }
-  }, [agents, selectedSubnetId])
+  }, [agents, selectedSubnetId]);
 
   const disconnectKeplr = async () => {
     if (window.keplr) {
@@ -454,8 +460,8 @@ export const WalletContextProvider = ({
       return { ...old, wagmi: false };
     });
   };
-  const params = useParams<Record<string,string>>()
-  
+  const params = useParams<Record<string, string>>();
+
   const disconnectMetamask = () => {
     if (sdk) {
       sdk.terminate();
@@ -502,10 +508,9 @@ export const WalletContextProvider = ({
     setSelectedSubnet(subnet);
   }, [selectedSubnetId, subnetListModelList]);
 
-
   useEffect(() => {
     if (!params?.subnetId) return;
-    setSelectedSubnetId(params?.subnetId)
+    setSelectedSubnetId(params?.subnetId);
   }, [params]);
 
   useEffect(() => {
@@ -513,11 +518,12 @@ export const WalletContextProvider = ({
     getTopicMessages(selectedMessagesTopicId, {});
   }, [selectedMessagesTopicId, toggleGroup3]);
   useEffect(() => {
-    if (!connectedWallet ||  !walletAccounts[connectedWallet]?.[0])
-      return;
+    if (!connectedWallet || !walletAccounts[connectedWallet]?.[0]) return;
     getAccountSubnets({
       params: {
-        acct: Address.fromString((walletAccounts[connectedWallet]?.[0] ?? "")).toAddressString(),
+        acct: Address.fromString(
+          walletAccounts[connectedWallet]?.[0] ?? ""
+        ).toAddressString(),
       },
     });
   }, [connectedWallet, toggleGroup4, walletAccounts]);
@@ -545,7 +551,11 @@ export const WalletContextProvider = ({
   useEffect(() => {}, []);
 
   useEffect(() => {
-    if (!connectedWallet || walletAccounts?.[connectedWallet].length == 0 || !walletAccounts[connectedWallet]?.[0])
+    if (
+      !connectedWallet ||
+      walletAccounts?.[connectedWallet].length == 0 ||
+      !walletAccounts[connectedWallet]?.[0]
+    )
       return;
     if (Object.keys(walletAccounts).length == 0) return;
     getAuthorizations({
@@ -574,22 +584,17 @@ export const WalletContextProvider = ({
   useEffect(() => {
     const serverAgents: AddressData[] = [];
     const localAgents: AddressData[] = [...agents];
-    
+
     (authenticationList?.data ?? []).forEach((authEl) => {
-     
-      const idx: number = localAgents.findIndex(
-        (agt) => {
-          
-         
-         return agt.address == authEl.agt ||
-            Address.fromString(agt.address).toAddressString() == authEl.agt
-        }
-      );
+      const idx: number = localAgents.findIndex((agt) => {
+        return (
+          agt.address == authEl.agt ||
+          Address.fromString(agt.address).toAddressString() == authEl.agt
+        );
+      });
       if (idx != -1) {
-       
         localAgents[idx].authData = authEl;
       } else {
-       
         serverAgents.push({
           address: authEl.agt,
           authData: authEl,
@@ -757,13 +762,13 @@ export const WalletContextProvider = ({
 
         const hash = Utils.keccak256Hash(pb).toString("base64");
 
-    const message = JSON.stringify({
-      entity: `Authorization`,
-      network: ML_CHAIN_ID,
-      identifier: `${authority.agent.address}`,
-      hash: `${hash}`,
-    }).replace(/\\s+/g, "");
-        
+        const message = JSON.stringify({
+          entity: `Authorization`,
+          network: ML_CHAIN_ID,
+          identifier: `${authority.agent.address}`,
+          hash: `${hash}`,
+        }).replace(/\\s+/g, "");
+
         try {
           if (connectedWallet == "keplr") {
             const signatureResp = await window.keplr.signArbitrary(
@@ -786,23 +791,29 @@ export const WalletContextProvider = ({
             );
           }
         } catch (e: any) {
-          if (e.error && String(e.error).includes('UserRejectedRequestError')) {
+          if (e.error && String(e.error).includes("UserRejectedRequestError")) {
             setLoaders((old) => ({ ...old, authorizeAgent: false }));
             return;
           }
           setLoaders((old) => ({ ...old, authorizeAgent: false }));
           return;
         }
-        
-       console.log("SUBNETID", subnetId)
-    const client = new Client(new RESTProvider(NODE_HTTP));
-    client.authorize(payload)
+
+        console.log("SUBNETID", subnetId);
+        const client = new Client(new RESTProvider(NODE_HTTP));
+        client
+          .authorize(payload)
           .then((ev: any) => {
             const client = new Client(new RESTProvider(NODE_HTTP));
 
             const event = ev?.data?.event;
             client.resolveEvent({ type: event?.t, id: event?.id }).then((e) => {
-              getAuthorizations({params: { snet: selectedSubnetId, acct:  `${Address.fromString(account).toAddressString()}` }});
+              getAuthorizations({
+                params: {
+                  snet: selectedSubnetId,
+                  acct: `${Address.fromString(account).toAddressString()}`,
+                },
+              });
               setToggleGroup2((old) => !old);
               makeRequest(MIDDLEWARE_HTTP_URLS.claim.url, {
                 method: MIDDLEWARE_HTTP_URLS.claim.method,
@@ -1014,7 +1025,6 @@ export const WalletContextProvider = ({
   };
 
   const getAuthorizations = async (params: Record<string, unknown>) => {
-    
     if (loaders["getAuthorizations"]) return;
     setLoaders((old) => ({ ...old, getAuthorizations: true }));
     try {
@@ -1025,9 +1035,8 @@ export const WalletContextProvider = ({
       if ((respond as any)?.error) {
         notification.error({ message: (respond as any)?.error + "" });
       }
-      
+
       setAuthenticationList(respond);
-    
     } catch (error) {}
     setLoaders((old) => ({ ...old, getAuthorizations: false }));
   };
@@ -1397,11 +1406,13 @@ export const WalletContextProvider = ({
       });
     } catch (e: any) {
       console.log("Subnet error", e.error);
-      if (e.error && String(e.error).includes('UserRejectedRequestError')) {
+      if (e.error && String(e.error).includes("UserRejectedRequestError")) {
         setLoaders((old) => ({ ...old, createSubnet: false }));
         return;
       }
-      notification.error({ message: String(e?.response?.data?.error ?? e.message) });
+      notification.error({
+        message: String(e?.response?.data?.error ?? e.message),
+      });
     }
     setLoaders((old) => ({ ...old, createSubnet: false }));
   };
@@ -1559,16 +1570,15 @@ export const MetaWrapper = ({ children }: { children: ReactNode }) => {
 export const WagmiWrapper = ({ children }: { children: ReactNode }) => {
   const queryClient = new QueryClient();
 
-//  const web3ModalConfig = defaultWagmiConfig({
-//     metadata,
-//     chains: chains,
-//     projectId: wagmiProjectId,
-//     ssr: true,
-//     storage: createStorage({
-//       storage: cookieStorage,
-//     }),
-//   });
-  
+  //  const web3ModalConfig = defaultWagmiConfig({
+  //     metadata,
+  //     chains: chains,
+  //     projectId: wagmiProjectId,
+  //     ssr: true,
+  //     storage: createStorage({
+  //       storage: cookieStorage,
+  //     }),
+  //   });
 
   // 3. Create modal
   createWeb3Modal({

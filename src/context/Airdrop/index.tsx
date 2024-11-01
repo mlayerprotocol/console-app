@@ -5,11 +5,13 @@ import {
   ReactNode,
   SetStateAction,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from "react";
 import { WalletContext } from "../WalletProvider";
 import { Meta } from "@/model/points/by-category";
+import { useRouter } from "next/navigation";
 
 type TabDetail = {
   title: string;
@@ -20,13 +22,13 @@ type TabDetail = {
 interface AirDropContextValues {
   showMobileMenu?: boolean;
   setShowMobileMenu?: Dispatch<SetStateAction<boolean>>;
-  selectedScreen: number;
-  setSelectedScreen?: Dispatch<SetStateAction<number>>;
+  // selectedScreen: number;
+  // setSelectedScreen?: Dispatch<SetStateAction<number>>;
   tabsDetails: Meta[] | undefined;
 }
 
 export const AirDropContext = createContext<AirDropContextValues>({
-  selectedScreen: 0,
+  // selectedScreen: 0,
   tabsDetails: [],
 });
 
@@ -36,7 +38,7 @@ export const AirDropContextProvider = ({
   children: ReactNode;
 }) => {
   const { pointsCategoryList } = useContext(WalletContext);
-  const [selectedScreen, setSelectedScreen] = useState(0);
+  // const [selectedScreen, setSelectedScreen] = useState(0);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   // const tabsDetails: TabDetail[] = [
@@ -69,8 +71,8 @@ export const AirDropContextProvider = ({
   return (
     <AirDropContext.Provider
       value={{
-        selectedScreen,
-        setSelectedScreen,
+        // selectedScreen,
+        // setSelectedScreen,
         tabsDetails,
         showMobileMenu,
         setShowMobileMenu,
