@@ -59,7 +59,7 @@ export const AirDropv2 = (props: AirDropv2Props) => {
     setPointToggleGroup,
   } = useContext(WalletContext);
 
-  const selectedScreen = searchParams.get("tab")??0;
+  const selectedScreen = searchParams.get("tab") ?? 0;
 
   const { tabsDetails, setShowMobileMenu } = useContext(AirDropContext);
 
@@ -291,11 +291,11 @@ export const AirDropv2 = (props: AirDropv2Props) => {
       point: string;
       amount: string | number;
       actionText?: undefined;
-      _pt: PointData | undefined;
+      activity: Activity;
     },
     pointsDetail: PointDetailModel | undefined
   ): string => {
-    switch (obj._pt?.type) {
+    switch (obj.activity?.type) {
       case "x-follow":
         // case "Follow @rulerOfCode on X":
         if (pointsDetail?.data?.account?.socials?.twitter) {
@@ -315,6 +315,8 @@ export const AirDropv2 = (props: AirDropv2Props) => {
   const activitiesComponents = useMemo(() => {
     return activites.map((e, i) => {
       let showCheck = false;
+      let isALink =
+        e.type == "generic" && e.activity.data?.indexOf("http") == 0;
       if (i < 4 && parseInt(e.amount.toString()) > 0) {
         showCheck = true;
       }
@@ -330,6 +332,9 @@ export const AirDropv2 = (props: AirDropv2Props) => {
       if (e.type == "referral") {
         actionText = "Get referral link";
       }
+      if (isALink) {
+        actionText = e.activity.data ?? "";
+      }
       e = { ...e, actionText: actionText };
       return {
         meta: e.meta,
@@ -343,39 +348,49 @@ export const AirDropv2 = (props: AirDropv2Props) => {
                     <HeroIcons.CheckCircleIcon className="h-[20px] !text-green-500" />
                   )}
                 </span>
-                <span>
-                  {actionText && (
+                {isALink ? (
+                  <a
+                    target="_blank"
+                    href={actionText}
+                    className="text-sm text-blue-500 cursor-pointer"
+                  >
+                    Proceed
+                  </a>
+                ) : (
+                  <span>
+                    {actionText && (
+                      <span
+                        onClick={() => {
+                          handleAction(e as any, pointsDetail);
+                        }}
+                        className="text-sm text-blue-500 cursor-pointer"
+                      >
+                        {loaders[e.title] ? (
+                          <Spin />
+                        ) : (
+                          renderSubtext(e as any, pointsDetail)
+                        )}
+                      </span>
+                    )}{" "}
                     <span
                       onClick={() => {
-                        handleAction(e as any, pointsDetail);
+                        handleAction(e as any, pointsDetail, {
+                          alwaysConnect: true,
+                        });
                       }}
-                      className="text-sm text-blue-500 cursor-pointer"
+                      className="text-sm text-green-500 cursor-pointer"
                     >
                       {loaders[e.title] ? (
                         <Spin />
                       ) : (
-                        renderSubtext(e as any, pointsDetail)
+                        renderUserName(e as any, pointsDetail)
                       )}
                     </span>
-                  )}{" "}
-                  <span
-                    onClick={() => {
-                      handleAction(e as any, pointsDetail, {
-                        alwaysConnect: true,
-                      });
-                    }}
-                    className="text-sm text-green-500 cursor-pointer"
-                  >
-                    {loaders[e.title] ? (
-                      <Spin />
-                    ) : (
-                      renderUserName(e as any, pointsDetail)
-                    )}
                   </span>
-                </span>
+                )}
               </div>
               <span className="dark:text-white">{`${e.point}${
-                e?.unit ? ` per ${e?.unit}` : ""
+                e?.unit ? `/${e?.unit}` : ""
               }`}</span>
               <span className="dark:text-white text-2xl ml-auto">
                 {e.amount}
@@ -399,15 +414,7 @@ export const AirDropv2 = (props: AirDropv2Props) => {
       // transition={{ duration: 1, delay: 1 }}
     >
       <div className="w-full">
-        <div
-          onClick={() => {
-            setShowMobileMenu?.((old) => !old);
-          }}
-          className="h-12 w-12 bg-secondary rounded-full border border-borderColor lg:hidden flex items-center justify-center cursor-pointer mr-auto "
-        >
-          <MdMenu color="#2F5ED2" className="!opacity-100" size={20} />
-        </div>
-        <div className="max-w-[800px] flex my-2 mx-7 flex-col dark:text-white">
+        <div className="max-w-[800px] flex  mx-7 flex-col dark:text-white">
           <span className="">Welcome to the mLayer Airdrop Campaign</span>
           <span className="text-sm">
             Complete the following activities to earn points towards our
@@ -420,6 +427,15 @@ export const AirDropv2 = (props: AirDropv2Props) => {
               Learn more...
             </a>
           </span>
+        </div>
+        <div
+          onClick={() => {
+            setShowMobileMenu?.((old) => !old);
+          }}
+          className=" mt-4 h-12 w-full bg-secondary rounded border border-borderColor lg:hidden flex items-center justify-between gap-2 cursor-pointer px-4 "
+        >
+          <span>Select Category</span>
+          <MdMenu color="#2F5ED2" className="!opacity-100" size={20} />
         </div>
         <div className="flex my-8  dark:text-white justify-between bg-[url('/background_star.png')] p-5 rounded-lg">
           <span>Total Points Earned</span>
