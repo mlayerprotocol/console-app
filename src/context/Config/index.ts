@@ -1,21 +1,24 @@
-import { arbitrum, mainnet, base, baseSepolia, sepolia } from 'wagmi/chains';
-import { defaultWagmiConfig } from '@web3modal/wagmi/react/config';
-import { defineChain } from 'viem';
-import { cookieStorage, createStorage, createConfig, http } from 'wagmi';
+import { arbitrum, mainnet, base, baseSepolia, sepolia } from "wagmi/chains";
+import { defaultWagmiConfig } from "@web3modal/wagmi/react/config";
+import { defineChain } from "viem";
+import { cookieStorage, createStorage, createConfig, http } from "wagmi";
 
 export const wagmiProjectId: string =
-  process.env.NEXT_PUBLIC_WAGMI_PROJECT_ID ?? '';
+  process.env.NEXT_PUBLIC_WAGMI_PROJECT_ID ?? "";
 export const appUrl: string =
-  process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000';
+  process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
 
 export const metadata = {
-  name: 'mlayerStudio',
-  description: 'MLayer studi app',
+  name: "mlayerStudio",
+  description: "MLayer studi app",
   url: appUrl, // origin must match your domain & subdomain
-  icons: ['/logo.png'],
+  icons: ["/logo.png"],
 };
 
-export const chains = [base, baseSepolia] as const;
+export const chains = [
+  // base,
+  baseSepolia,
+] as const;
 export const wagmiConfig = createConfig({
   chains,
   //  projectId: wagmiProjectId,
@@ -25,7 +28,7 @@ export const wagmiConfig = createConfig({
     storage: cookieStorage,
   }),
   transports: {
-    [base.id]: http(),
+    // [base.id]: http(),
     [baseSepolia.id]: http(),
   },
 });
