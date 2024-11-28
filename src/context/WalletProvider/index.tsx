@@ -1547,25 +1547,25 @@ export const WalletContextProvider = ({
   );
 };
 
-export const MetaWrapper = ({ children }: { children: ReactNode }) => {
-  if (typeof window !== "undefined") {
-    return (
-      <MetaMaskProvider
-        debug={false}
-        sdkOptions={{
-          dappMetadata: {
-            name: "Example React Dapp",
-            url: window.location.href,
-          },
-          // Other options
-        }}
-      >
-        {children}
-      </MetaMaskProvider>
-    );
-  }
-  return <>{children}</>;
-};
+// export const MetaWrapper = ({ children }: { children: ReactNode }) => {
+//   if (typeof window !== "undefined") {
+//     return (
+//       <MetaMaskProvider
+//         debug={false}
+//         sdkOptions={{
+//           dappMetadata: {
+//             name: "Example React Dapp",
+//             url: window.location.href,
+//           },
+//           // Other options
+//         }}
+//       >
+//         {children}
+//       </MetaMaskProvider>
+//     );
+//   }
+//   return <>{children}</>;
+// };
 
 export const WagmiWrapper = ({ children }: { children: ReactNode }) => {
   const queryClient = new QueryClient();
