@@ -9,7 +9,7 @@ import {
   useState,
 } from "react";
 import * as stargate from "@cosmjs/stargate";
-import { MetaMaskProvider, useSDK } from "@metamask/sdk-react";
+// import { MetaMaskProvider, useSDK } from "@metamask/sdk-react";
 
 import { createWeb3Modal } from "@web3modal/wagmi/react";
 
@@ -269,7 +269,7 @@ export const WalletContextProvider = ({
   const [selectedAgent, setSelectedAgent] = useState<string>();
   const [selectedMessagesTopicId, setSelectedMessagesTopicId] =
     useState<string>();
-  const { sdk, connected, connecting, provider, chainId } = useSDK();
+  // const { sdk, connected, connecting, provider, chainId } = useSDK();
   const [cosmosSDK, setCosmosSDK] = useState<stargate.StargateClient>();
   const [agents, setAgents] = useState<AddressData[]>([]);
   const [localPrivKey, setLocalPrivKey] = useState<Record<string, string>>({});
@@ -463,9 +463,9 @@ export const WalletContextProvider = ({
   const params = useParams<Record<string, string>>();
 
   const disconnectMetamask = () => {
-    if (sdk) {
-      sdk.terminate();
-    }
+    // if (sdk) {
+    //   sdk.terminate();
+    // }
   };
 
   useEffect(() => {

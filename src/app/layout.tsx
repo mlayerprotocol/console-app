@@ -8,7 +8,7 @@ import localFont from "next/font/local";
 import {
   AirDropContextProvider,
   AppContextProvider,
-  MetaWrapper,
+  // MetaWrapper,
   ThemeContextProvider,
   WagmiWrapper,
   WalletContextProvider,
