@@ -62,6 +62,7 @@ export const MyTopics = (props: MyTopicsProps) => {
     () => walletAccounts[connectedWallet ?? ""]?.[0],
     [walletAccounts, connectedWallet]
   );
+
   const dataSource = useMemo(() => {
     return (accountTopicList?.data ?? []).filter(
       (item) =>

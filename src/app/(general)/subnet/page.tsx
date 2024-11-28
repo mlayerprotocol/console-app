@@ -71,7 +71,16 @@ const SubnetPage = () => {
       {/* {subnetListModelList?.data?.length == 0 && (
         <Empty description="No subnet created" />
       )} */}
-      <div className="grid grid-cols-12 gap-4">
+          <div className="grid grid-cols-12 gap-4">
+          <div
+          onClick={() => {
+            setShowCreateSubnetModal((old) => !old);
+          }}
+          className="col-span-12 lg:col-span-4 h-[102px] flex gap-2 items-center rounded justify-center border-mainLightColor border border-dashed cursor-pointer"
+        >
+          {loaders["createSubnet"] == true ? <Spin /> : <BsPlusCircleFill />}
+          <span>Create New Subnet</span>
+        </div>
         {subnetListModelList?.data?.map((subnet, index) => {
           const enabled = subnet.st == 1;
           const selected = subnet.id == selectedSubnetId;
@@ -119,15 +128,7 @@ const SubnetPage = () => {
             </Card>
           );
         })}
-        <div
-          onClick={() => {
-            setShowCreateSubnetModal((old) => !old);
-          }}
-          className="col-span-12 lg:col-span-4 h-[102px] flex gap-2 items-center rounded justify-center border-mainLightColor border border-dashed cursor-pointer"
-        >
-          {loaders["createSubnet"] == true ? <Spin /> : <BsPlusCircleFill />}
-          <span>Create New Subnet</span>
-        </div>
+       
       </div>
       </div>
       </ConnectWalletGuard>

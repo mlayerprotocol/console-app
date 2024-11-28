@@ -12,12 +12,14 @@ export interface Meta {
 export interface BlockStat {
   id: string;
   blk: number;
+  cy: number;
   t: number;
   ec: number;
   mc: number;
   tc: number;
   ac: number;
   c: number;
+  e: string;
   CreatedAt: string;
   UpdatedAt: string;
   DeletedAt: null;

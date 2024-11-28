@@ -121,9 +121,9 @@ console.log({connectedWallet, accounts: walletAccounts})
           height={24}
           priority
         /> */}
-          <div className="w-full md:w-auto flex gap-3 md:gap-4 items-center !text-xs !text-white bg-mainLightColor slant h-[50px] px-5 md:px-10">
+          <div className="w-full md:w-auto flex gap-3 md:gap-4 items-center !text-xs !text-white bg-mainLightColor slant h-[30px] px-5 md:px-10">
             <span>MLT PRICE: $0.0001</span>
-            <span>MSG PRICE: 0.002MLT (~$0.00002)</span>
+            <span>MSG COST: 0.002MLT (~$0.00002)</span>
           </div>
 
           <div className=" hidden md:flex ml-auto items-center">

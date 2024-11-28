@@ -202,7 +202,7 @@ html.dark .ant-input-number-affix-wrapper {
     font-size: 0;
     width: 0;
     height: 0;
-    border-top: 50px solid var(--m-background-color);
+    border-top: 30px solid var(--m-background-color);
     border-bottom: 0px solid transparent;
     border-right: 0px solid transparent;
     border-left: 15px solid transparent;

@@ -23,6 +23,7 @@ export interface MessageData {
   agt: string;
   dH: string;
   url: string;
+  ets: number;
   CreatedAt: string;
   UpdatedAt: string;
   DeletedAt: string;

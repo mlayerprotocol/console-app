@@ -73,9 +73,9 @@ export const CreateSubnet = (props: CreateSubnetProps) => {
             {...formLayout}
             layout="vertical"
             className="flex flex-col"
-            name="basic"
+            name="guest"
             form={form}
-            initialValues={{dAuthPriv: AuthorizationPrivilege.Basic}}
+            initialValues={{dAuthPriv: AuthorizationPrivilege.Guest}}
             onFinish={(data) => {
               // const agent: AddressData | undefined = agents.find(
               //   (el) => el.address == data["address"]
@@ -105,7 +105,7 @@ export const CreateSubnet = (props: CreateSubnetProps) => {
                 { required: true, message: "Reference Id is required" },
               ]}
             >
-              <Input placeholder="e.g. unique id or code (no space)" />
+              <Input placeholder="e.g com.example.app (no space)" />
             </Form.Item>
 
 
@@ -144,7 +144,7 @@ export const CreateSubnet = (props: CreateSubnetProps) => {
                 { required: true, message: "Please select an auth privilege!" },
               ]}
             >
-              <Select defaultValue={AuthorizationPrivilege.Basic} >
+              <Select defaultValue={AuthorizationPrivilege.Guest} >
                 {Object.keys(AuthorizationPrivilege).filter(d=>isNaN(parseInt(d))).map((val, index) => {
                   return (
                     <Select.Option key={index} value={(Entities.AuthorizationPrivilege as any)[String(val)]}>

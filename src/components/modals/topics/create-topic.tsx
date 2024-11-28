@@ -136,7 +136,7 @@ export const CreateTopic = (props: CreateTopicProps) => {
               name="ref"
               rules={[{ required: true, message: "Please input a reference id!" }]}
             >
-              <Input placeholder="Unique Id or handle" />
+              <Input placeholder="e.g com.example.app (no space)" />
             </Form.Item>
 
             <Form.Item

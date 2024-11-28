@@ -104,21 +104,21 @@ export const TopicAgents = (props: TopicAgentsProps) => {
     },
 
     {
-      title: "Created",
-      dataIndex: "CreatedAt",
-      key: "createdAt",
+      title: "Time",
+      dataIndex: "ts",
+      key: "ts",
       render: (text, record) => {
-        return <>{moment(record.CreatedAt).fromNow()}</>;
+        return <>{moment(record.ts).fromNow()}</>;
       },
     },
-    {
-      title: "Updated",
-      dataIndex: "UpdatedAt",
-      key: "updatedAt",
-      render: (text, record) => {
-        return <>{moment(record.UpdatedAt).fromNow()}</>;
-      },
-    },
+    // {
+    //   title: "Updated",
+    //   dataIndex: "UpdatedAt",
+    //   key: "updatedAt",
+    //   render: (text, record) => {
+    //     return <>{moment(record.UpdatedAt).fromNow()}</>;
+    //   },
+    // },
   ];
 
   return (

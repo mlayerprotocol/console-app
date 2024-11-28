@@ -15,12 +15,12 @@ import { BlockStat } from "@/model/block-stats";
 import { ethers } from "ethers";
 
 const columns: ColumnsType<BlockStat> = [
-  {
-    title: "Height",
-    dataIndex: "blk",
-    key: "blk",
+  // {
+  //   title: "Block",
+  //   dataIndex: "blk",
+  //   key: "blk",
     
-  },
+  // },
   {
     title: "Cycle",
     dataIndex: "cy",
@@ -32,9 +32,9 @@ const columns: ColumnsType<BlockStat> = [
     key: "eC",
   },
   {
-    title: "Volume",
-    dataIndex: "vol",
-    key: "vol",
+    title: "Last Event",
+    dataIndex: "e",
+    key: "e",
   },
   // {
   //   title: "Finalized",
@@ -51,7 +51,7 @@ const DashboardPage = () => {
   const dataSource = useMemo(() => {
     return blockStatsList?.data ?? [];
   }, [blockStatsList]);
-
+console.log('BLOCKSTATA', blockStatsList)
   useEffect(() => {
     intervalId = setInterval(() => {
       setToggleGroupStats?.((old) => !old);
@@ -74,7 +74,7 @@ const DashboardPage = () => {
         <Card className="col-span-12 md:col-span-6 lg:col-span-3">
           <NewHomeStatCardOne
             title="Total Events"
-            amount={`${mainStatsData?.data.messages ?? ""}`}
+            amount={`${mainStatsData?.data.event_count ?? ""}`}
             icon={
               <HeroIcons.EnvelopeIcon className="h-[18px] !text-[#AEB9E1] " />
             }
@@ -83,7 +83,7 @@ const DashboardPage = () => {
         <Card className="col-span-12 md:col-span-6 lg:col-span-3">
           <HomeStatCardTwo
             title="TVL"
-            amount={`${mainStatsData?.data.topic_balance || 0} MLT`}
+            amount={`${mainStatsData?.data.tvl || 0} MLT`}
             offset={`${currencyFormat(0)}`}
             icon={
               <HeroIcons.BarsArrowUpIcon className="h-[18px] !text-[#AEB9E1] " />
@@ -95,7 +95,7 @@ const DashboardPage = () => {
           <HomeStatCardTwo
             title="Total Tranx Volume"
             amount={`${ethers.formatEther(
-             String(mainStatsData?.data.message_cost ?? 0)
+             String(mainStatsData?.data.total_events_value ?? 0)
             )} MLT`}
             // date="2h"
             offset="~$1,212"
@@ -107,14 +107,14 @@ const DashboardPage = () => {
       </div>
 
       <div className="flex justify-center mt-10">
-        <span className="font-bold text-sm dark:text-white">Recent Blocks</span>
+        <span className="font-bold text-sm dark:text-white">Recent Cycles</span>
       </div>
       <Table
         // bordered
         className="rounded-lg"
-        dataSource={(dataSource ?? []).filter((d) => d.blk != 0)}
+        dataSource={(dataSource ?? []).filter((d) => d.blk != 0 || d.cy != 0)}
         columns={columns}
-        loading={loaders["getBlockStats"]}
+        loading={loaders["getBlockStats"] && dataSource.length == 0}
       />
     </div>
   );
