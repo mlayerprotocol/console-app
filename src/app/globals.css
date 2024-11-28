@@ -103,7 +103,7 @@ html.light  .ant-input-affix-wrapper > input{
   
   background-color: #eeeeee!important;
 }
-.ant-input-number-affix-wrapper {
+.ant-input-number-affix-wrapper, .ant-input-number {
   width: 100%!important;
   border-radius: 8px!important;
 }

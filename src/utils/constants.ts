@@ -39,6 +39,10 @@ export const SOLIDBASE_HTTP = process.env.NEXT_PUBLIC_SOLIDBASE_HTTP;
 export const FOLLOW_DISCORD_HTTP = process.env.NEXT_PUBLIC_FOLLOW_DISCORD_HTTP;
 export const FOLLOW_TWITTER_HTTP = process.env.NEXT_PUBLIC_FOLLOW_TWITTER_HTTP;
 export const NETWORK = process.env.NEXT_PUBLIC_NETWORK || "Devnet";
+
+export const STAKE_CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_STAKE_CONTRACT_ADDRESS;
+export const ML_TOKEN_CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_ML_TOKEN_CONTRACT_ADDRESS;
+
 export const displayVariants = {
   hidden: { opacity: 0, scale: 0 },
   exit0: { opacity: 0, scale: 0 },

@@ -11,9 +11,11 @@ import { Bs3Square, BsMenuApp, BsWallet } from "react-icons/bs";
 import { MdMore, MdMoreHoriz, MdMoreVert } from "react-icons/md";
 import { SubnetAppAsideMobile } from "@/components/layouts/wallet/sidebar/mobile";
 import { AnimatePresence } from "framer-motion";
+import { TopupSubnet } from "@/components/modals/topup";
 
 const WalletPage = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [showTopUpSubnet, setShowTopUpSubnet] = useState<boolean>(false);
   const {
     selectedAgent,
     setSelectedAgent,
@@ -118,6 +120,14 @@ const WalletPage = () => {
               )}{" "}
               $MLT
             </span>
+            <span
+              onClick={() => {
+                setShowTopUpSubnet(true);
+              }}
+              className="cursor-pointer"
+            >
+              + Topup
+            </span>
           </div>
           <Dropdown
             menu={{ items }}
@@ -147,6 +157,12 @@ const WalletPage = () => {
           />
         )}
       </AnimatePresence>
+      <TopupSubnet
+        isModalOpen={showTopUpSubnet}
+        onCancel={() => {
+          setShowTopUpSubnet((old) => !old);
+        }}
+      />
     </>
   );
 };
