@@ -1505,7 +1505,7 @@ export const WalletContextProvider = ({
         initializeKeplr,
         intializeMetamask,
         intializeWagmi,
-        authorizeAgent,
+        // authorizeAgent,
         generateAgent,
         updateAgents,
         generateLocalPrivKeys,
@@ -1515,7 +1515,7 @@ export const WalletContextProvider = ({
         setSelectedMessagesTopicId,
         setSelectedSubnetId,
 
-        subcribeToTopic,
+        // subcribeToTopic,
         sendMessage,
         createSubnet,
         setToggleGroupStats,

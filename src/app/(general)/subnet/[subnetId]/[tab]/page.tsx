@@ -1,16 +1,22 @@
 "use client";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 
 import { MainAuth, WalletMainLayout } from "@/components";
 import { WalletContext } from "@/context";
 import { Button, Card, Dropdown, MenuProps, Space } from "antd";
 import * as HeroIcons from "@heroicons/react/24/solid";
-import { shorternAddress, metaToObject } from "@/utils";
+import { shorternAddress, metaToObject, uuidToHexString } from "@/utils";
 import { ethers } from "ethers";
 import { Bs3Square, BsMenuApp, BsWallet } from "react-icons/bs";
 import { MdMore, MdMoreHoriz, MdMoreVert } from "react-icons/md";
 import { SubnetAppAsideMobile } from "@/components/layouts/wallet/sidebar/mobile";
 import { AnimatePresence } from "framer-motion";
+import { TopupSubnet } from "@/components/modals/topup/topup-subnet";
+import { useReadContract } from "wagmi";
+import { stakeContractConfig } from "@/utils/contracts";
+import { keccak256 } from "viem";
+import { Utils } from "@mlayerprotocol/core";
+// import { TopupSubnet } from "@/components/modals/topup";
 
 const WalletPage = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -25,6 +31,41 @@ const WalletPage = () => {
     selectedSubnet,
   } = useContext(WalletContext);
   const [showSubnetSideMenu, setShowSubnetSideMenu] = useState(false);
+  const [showTopUpSubnet, setShowTopUpSubnet] = useState<boolean>(false);
+  // const bytes16SelectedSubnetId = useMemo(() => {
+  //   return keccak256(`0x${selectedSubnetId}`).slice(0, 34);
+  // }, [selectedSubnetId]); // Trim to 16 bytes (0x prefix + 32 hex chars)
+
+  const {
+    data: subnetBalance,
+    isError,
+    isLoading,
+    error,
+    isLoadingError,
+    refetch,
+  } = useReadContract({
+    ...stakeContractConfig,
+    functionName: "subnetBalance",
+    args: [uuidToHexString(selectedSubnetId ?? "")],
+  });
+  useEffect(() => {
+    // console.log("--------help");
+    console.log({
+      subnetBalance,
+      isError,
+      isLoading,
+      error,
+      selectedSubnetId,
+    });
+  }, [
+    subnetBalance,
+    isError,
+    isLoading,
+    error,
+    isLoadingError,
+    selectedSubnetId,
+  ]);
+
   const items: MenuProps["items"] =
     (combinedAgents ?? [])
       .filter((cAgt) => cAgt.privateKey && cAgt.authData)
@@ -113,10 +154,16 @@ const WalletPage = () => {
               <span className=" "> Balance:</span>
             </span>
             <span className="text-[#2F5ED2]">
-              {ethers.formatEther(
-                String(selectedSubnet?.balance?.toString() ?? "0")
-              )}{" "}
+              {ethers.formatEther(String(subnetBalance?.toString() ?? "0"))}{" "}
               $MLT
+            </span>
+            <span
+              onClick={() => {
+                setShowTopUpSubnet(true);
+              }}
+              className="cursor-pointer"
+            >
+              + Topup
             </span>
           </div>
           <Dropdown
@@ -147,6 +194,16 @@ const WalletPage = () => {
           />
         )}
       </AnimatePresence>
+      <TopupSubnet
+        subnetId={selectedSubnetId}
+        isModalOpen={showTopUpSubnet}
+        onCancel={() => {
+          setShowTopUpSubnet((old) => !old);
+          setTimeout(() => {
+            refetch();
+          }, 3000);
+        }}
+      />
     </>
   );
 };
