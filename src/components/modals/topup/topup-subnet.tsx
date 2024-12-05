@@ -161,7 +161,7 @@ export const TopupSubnet = (props: TopupSubnetProps) => {
             autoComplete="off"
           >
             <Form.Item
-              label="Amount :"
+              label="Amount (MLT)"
               extra={
                 <>{`Min Stake Value : ${
                   ethers.formatEther(String(minStakableData ?? "0")) ?? ""
@@ -169,7 +169,7 @@ export const TopupSubnet = (props: TopupSubnetProps) => {
               }
               name="amount"
               rules={[
-                { required: true, message: "Please input your message!" },
+                { required: true, message: "Please input amount!" },
               ]}
             >
               <InputNumber

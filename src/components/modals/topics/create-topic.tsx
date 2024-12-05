@@ -156,7 +156,7 @@ export const CreateTopic = (props: CreateTopicProps) => {
             </Form.Item>
             
 
-            <Form.Item label={<Space><Tooltip title="Public topics can be subscribed to by any device" ><InformationCircleIcon className="w-[16px]"/></Tooltip> <span>Public</span></Space>} name="pub" valuePropName="checked">
+            <Form.Item label={<Space><Tooltip title="Public topics can be subscribed to by any agent/device" ><InformationCircleIcon className="w-[16px]"/></Tooltip> <span>Public</span></Space>} name="pub" valuePropName="checked">
             <Switch />
             </Form.Item>
 

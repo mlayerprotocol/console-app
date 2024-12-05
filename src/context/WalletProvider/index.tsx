@@ -122,11 +122,11 @@ interface WalletContextValues {
   subscriberTopicList: Record<string, SubscriberListModel> | undefined;
   recordTopicList: Record<string, TopicListModel> | undefined;
   disconnectKeplr?: () => Promise<void>;
-  authorizeAgent?: (
+  authorizeAgent: (
     agent: AddressData,
-    days: number,
-    privilege: AuthorizationPrivilege,
-    subnetId?: string
+    days: number | undefined,
+    privilege: AuthorizationPrivilege | undefined,
+    subnetId: string
   ) => Promise<void>;
   createTopic?: (
     agent: AddressData,
@@ -717,13 +717,22 @@ export const WalletContextProvider = ({
   //   return auth;
   //   // console.log("AUTHORIZE", auth, "rr", auth.error);
   // };
-
+  
+/**
+ * 
+ * @param agent 
+ * @param days 
+ * @param privilege 
+ * @param subnetId 
+ * @returns 
+ */
   const authorizeAgent = async (
     agent: AddressData,
     days: number = 30,
     privilege: AuthorizationPrivilege = AuthorizationPrivilege.Member,
     subnetId: string
   ) => {
+   
     if (connectedWallet == null) {
       notification.error({ message: "No wallet connected" });
       return;
@@ -1505,7 +1514,7 @@ export const WalletContextProvider = ({
         initializeKeplr,
         intializeMetamask,
         intializeWagmi,
-        // authorizeAgent,
+        authorizeAgent,
         generateAgent,
         updateAgents,
         generateLocalPrivKeys,

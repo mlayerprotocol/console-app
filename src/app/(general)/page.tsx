@@ -53,9 +53,10 @@ const DashboardPage = () => {
   }, [blockStatsList]);
 console.log('BLOCKSTATA', blockStatsList)
   useEffect(() => {
+    setToggleGroupStats?.((old) => !old);
     intervalId = setInterval(() => {
       setToggleGroupStats?.((old) => !old);
-    }, 5000);
+    }, 3000);
 
     return () => {
       clearInterval(intervalId);

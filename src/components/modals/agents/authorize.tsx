@@ -100,9 +100,12 @@ export const AuthorizeAgent = (props: AuthorizeAgentProps) => {
             onFinish={(data) => {
               const keyPair: AddressData =
                 agents[data["address"] ?? 0] ?? updateAddressData;
+            
               const days: number = data["duration"];
               const previledge: AuthorizationPrivilege = data["privi"];
-              authorizeAgent?.(keyPair, days, previledge, updateAddressData?.subnetId).then(o => {
+              console.log("AGGETNNNNNN",  authorizeAgent)
+              authorizeAgent(keyPair, days, previledge, updateAddressData?.subnetId).then(o => {
+               
                 if (!selectedAgent || selectedAgent =='') {
                   setSelectedAgent?.(keyPair.address)
                 }
