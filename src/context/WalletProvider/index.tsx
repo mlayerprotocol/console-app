@@ -151,6 +151,7 @@ interface WalletContextValues {
       sub?: string;
       rol: SubscriberRole;
       status?: SubscriptionStatus;
+      ref?: string;
     }
   ) => Promise<void>;
   sendMessage?: (
@@ -1071,7 +1072,7 @@ export const WalletContextProvider = ({
       sub?: string;
       status?: SubscriptionStatus;
         rol: SubscriberRole;
-        ref: string;
+        ref?: string;
     }
   ) => {
     if (connectedWallet == null) {
@@ -1524,7 +1525,7 @@ export const WalletContextProvider = ({
         setSelectedMessagesTopicId,
         setSelectedSubnetId,
 
-        // subcribeToTopic,
+        subcribeToTopic,
         sendMessage,
         createSubnet,
         setToggleGroupStats,
