@@ -65,3 +65,7 @@ export async function makeRequest(
     return undefined;
   }
 }
+
+export function uuidToHexString(uuid: string): string {
+  return `0x${uuid?.replaceAll("-", "")}`;
+}

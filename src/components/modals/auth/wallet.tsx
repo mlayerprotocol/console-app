@@ -23,8 +23,6 @@ export const WalletConnect = (props: WalletConnectProps) => {
   } = useContext(WalletContext);
   const { open, close } = useWeb3Modal();
   const { address, isConnecting, isDisconnected } = useAccount();
-  
-
 
   useEffect(() => {
     if (address) {
@@ -46,7 +44,7 @@ export const WalletConnect = (props: WalletConnectProps) => {
     >
       <Button
         onClick={() => {
-          open().catch(e=>console.log("OPENERROR",e));
+          open().catch((e: any) => console.log("OPENERROR", e));
           onSelect?.("", "");
         }}
         loading={loadingWalletConnections["wagmi"]}
@@ -118,7 +116,6 @@ export const WalletConnect = (props: WalletConnectProps) => {
           <CheckCircleFilled className="!text-green-500 text-2xl !ml-auto" />
         )}
       </Button> */}
-      
     </motion.div>
   );
 };
