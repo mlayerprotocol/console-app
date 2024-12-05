@@ -14,6 +14,7 @@ import React, { useContext, useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { useForm } from "antd/es/form/Form";
 import {
+  delay,
   displayVariants,
   formLayout,
   shorternAddress,
@@ -23,7 +24,7 @@ import {
 import { WalletContext } from "@/context";
 import { readContract } from "viem/actions";
 import { stakeContractConfig, tokenContractConfig } from "@/utils/contracts";
-import { useWriteContract, useReadContract } from "wagmi";
+import { useWriteContract, useReadContract, useAccount } from "wagmi";
 import { ethers, parseEther } from "ethers";
 
 interface TopupSubnetProps {
@@ -38,6 +39,8 @@ export const TopupSubnet = (props: TopupSubnetProps) => {
 
   const { isModalOpen = false, onCancel, subnetId } = props;
   const [form] = useForm();
+  const { address } = useAccount();
+  const [isLoadingAwait, setIsLoadingAwait] = useState(false);
 
   // const { data, isSuccess, writeContract } = useContractWrite({
   //   ...tokenContractConfig,
@@ -63,17 +66,51 @@ export const TopupSubnet = (props: TopupSubnetProps) => {
   });
   const {
     data,
-    isError,
+    // isError,
     isPending: isWritePending,
     isSuccess,
-    error,
+    // error,
     writeContract,
   } = useWriteContract();
+  const {
+    data: allowance,
+    isError,
+    isLoading,
+    isFetching,
+    error,
+    isLoadingError,
+    refetch: reFetchAllowce,
+  } = useReadContract({
+    ...tokenContractConfig,
+    functionName: "allowance",
+    args: [address, STAKE_CONTRACT_ADDRESS],
+  });
+  const {
+    data: userBalance,
+    // isError,
+    // isLoading,
+    // isFetching,
+    // error,
+    // isLoadingError,
+    refetch: reFetchUserBalance,
+  } = useReadContract({
+    ...tokenContractConfig,
+    functionName: "balanceOf",
+    args: [address],
+  });
 
   useEffect(() => {
     // console.log("--------help");
-    console.log({ data, isError, isWritePending, isSuccess, error });
-  }, [data, isError, isWritePending, isSuccess, error]);
+    console.log({
+      userBalance,
+      allowance,
+      data,
+      isError,
+      isWritePending,
+      isSuccess,
+      error,
+    });
+  }, [userBalance, allowance, isError, isWritePending, isSuccess, error]);
 
   useEffect(() => {
     form.setFieldsValue({ subnetId });
@@ -111,7 +148,42 @@ export const TopupSubnet = (props: TopupSubnetProps) => {
             initialValues={{ subnetId }}
             onFinish={async (data) => {
               const etherAmount: string = String(data["amount"]);
-              const weiAmount = parseEther(etherAmount); // Returns BigNumber
+              const weiAmount = parseEther(etherAmount);
+
+              function stake() {
+                writeContract(
+                  {
+                    ...stakeContractConfig,
+                    functionName: "stake",
+                    args: [uuidToHexString(subnetId ?? ""), weiAmount],
+                  },
+                  {
+                    onSuccess(data, variables, context) {
+                      form.setFieldsValue({ amount: "" });
+                      onCancel?.({} as any);
+                      notification.success({
+                        message: "Transaction was successful",
+                      });
+                    },
+                    onError(error, variables, context) {
+                      reFetchAllowce();
+                      reFetchUserBalance();
+                      notification.error({
+                        message: error.message,
+                      });
+                    },
+                  }
+                );
+              }
+              setIsLoadingAwait(true);
+              await reFetchAllowce();
+              await reFetchUserBalance
+              await delay(2000); // Wait for 1 seconds
+              setIsLoadingAwait(false);
+              if ((allowance as bigint) >= weiAmount) {
+                stake();
+                return;
+              } // Returns BigNumber
 
               writeContract(
                 {
@@ -120,35 +192,22 @@ export const TopupSubnet = (props: TopupSubnetProps) => {
                   args: [STAKE_CONTRACT_ADDRESS, weiAmount],
                 },
                 {
-                  onSuccess(data, variables, context) {
+                  onError(error, variables, context) {
+                    console.log({ Reject: error });
+                    reFetchAllowce();
+                    reFetchUserBalance();
+                  },
+                  async onSuccess(data, variables, context) {
                     console.log({
                       After: "onSuccess",
                       data,
                       variables,
                       context,
                     });
-
-                    writeContract(
-                      {
-                        ...stakeContractConfig,
-                        functionName: "stake",
-                        args: [uuidToHexString(subnetId ?? ""), weiAmount],
-                      },
-                      {
-                        onSuccess(data, variables, context) {
-                          form.setFieldsValue({});
-                          onCancel?.({} as any);
-                          notification.success({
-                            message: "Transaction was successful",
-                          });
-                        },
-                        onError(error, variables, context) {
-                          notification.error({
-                            message: error.message,
-                          });
-                        },
-                      }
-                    );
+                    setIsLoadingAwait(true);
+                    await delay(3000); // Wait for 2 seconds
+                    setIsLoadingAwait(false);
+                    stake();
                   },
                 }
               );
@@ -160,8 +219,29 @@ export const TopupSubnet = (props: TopupSubnetProps) => {
             // onFinishFailed={onFinishFailed}
             autoComplete="off"
           >
+            <div className="flex justify-between  text-lg mb-2">
+              <span>Amount :</span>
+              <span
+                onClick={() => {
+                  form.setFieldsValue({
+                    amount:
+                      ethers.formatEther(String(userBalance ?? "0")) ?? "",
+                  });
+                }}
+                className="dark:text-gray-500 cursor-pointer"
+              >
+                {ethers.formatEther(String(userBalance ?? "0")) ?? ""} MLT
+              </span>
+            </div>
             <Form.Item
-              label="Amount :"
+              // label={
+              //   <div className="flex justify-between">
+              //     <span>Amount :</span>
+              //     <span>
+              //       {ethers.formatEther(String(userBalance ?? "0")) ?? ""}
+              //     </span>
+              //   </div>
+              // }
               extra={
                 minStakableData ? (
                   <>{`Minimum : ${
@@ -173,7 +253,7 @@ export const TopupSubnet = (props: TopupSubnetProps) => {
               }
               name="amount"
               rules={[
-                { required: true, message: "Please input your message!" },
+                { required: true, message: "Please input a valid amount!" },
               ]}
             >
               <InputNumber
@@ -183,7 +263,7 @@ export const TopupSubnet = (props: TopupSubnetProps) => {
             </Form.Item>
 
             <Button
-              loading={isWritePending}
+              loading={isWritePending || isLoadingAwait}
               type="primary"
               htmlType="submit"
               className="w-full mt-[28px] self-end"

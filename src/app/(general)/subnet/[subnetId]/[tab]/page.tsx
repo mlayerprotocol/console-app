@@ -151,9 +151,9 @@ const WalletPage = () => {
           <div className="flex gap-2 justify-between grow lg:grow-0 ml-auto lg:ml-14 items-center text-sm dark:text-white w-auto">
             <span className="flex gap-2">
               <BsWallet size={18} />
-              <span className=" "> Balance:</span>
+              <span className="dark:text-gray-400 "> Balance:</span>
             </span>
-            <span className="text-[#2F5ED2]">
+            <span className=" mr-6">
               {ethers.formatEther(String(subnetBalance?.toString() ?? "0"))}{" "}
               $MLT
             </span>
