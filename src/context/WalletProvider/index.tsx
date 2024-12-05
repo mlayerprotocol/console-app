@@ -126,7 +126,7 @@ interface WalletContextValues {
     agent: AddressData,
     days: number | undefined,
     privilege: AuthorizationPrivilege | undefined,
-    subnetId: string
+    subnetId?: string
   ) => Promise<void>;
   createTopic?: (
     agent: AddressData,
@@ -731,7 +731,7 @@ export const WalletContextProvider = ({
     agent: AddressData,
     days: number = 30,
     privilege: AuthorizationPrivilege = AuthorizationPrivilege.Member,
-    subnetId: string
+    subnetId?: string
   ) => {
    
     if (connectedWallet == null) {
