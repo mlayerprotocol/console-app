@@ -157,14 +157,17 @@ const WalletPage = () => {
               {ethers.formatEther(String(subnetBalance?.toString() ?? "0"))}{" "}
               $MLT
             </span>
-            <span
+            <Button
+              ghost
+              type="primary"
+              shape="round"
               onClick={() => {
                 setShowTopUpSubnet(true);
               }}
               className="cursor-pointer"
             >
               + Topup
-            </span>
+            </Button>
           </div>
           <Dropdown
             menu={{ items }}

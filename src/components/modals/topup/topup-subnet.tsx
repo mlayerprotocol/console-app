@@ -163,9 +163,13 @@ export const TopupSubnet = (props: TopupSubnetProps) => {
             <Form.Item
               label="Amount :"
               extra={
-                <>{`Min Stake Value : ${
-                  ethers.formatEther(String(minStakableData ?? "0")) ?? ""
-                } `}</>
+                minStakableData ? (
+                  <>{`Minimum : ${
+                    ethers.formatEther(String(minStakableData ?? "0")) ?? ""
+                  } `}</>
+                ) : (
+                  <></>
+                )
               }
               name="amount"
               rules={[
