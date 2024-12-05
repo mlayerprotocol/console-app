@@ -765,9 +765,9 @@ export const WalletContextProvider = ({
         const hash = Utils.keccak256Hash(pb).toString("base64");
 
         const message = JSON.stringify({
-          entity: `Authorization`,
-          network: ML_CHAIN_ID,
+          action: `write_authorization`,
           identifier: `${authority.agent.address}`,
+          network: ML_CHAIN_ID,
           hash: `${hash}`,
         }).replace(/\\s+/g, "");
 
@@ -1368,9 +1368,9 @@ export const WalletContextProvider = ({
 
       const hash = Utils.keccak256Hash(pb).toString("base64");
       const message = JSON.stringify({
-        entity: `Subnet`,
-        network: ML_CHAIN_ID,
+        action: `write_subnet`,
         identifier: `${subNetwork.reference}`,
+        network: ML_CHAIN_ID,
         hash: `${hash}`,
       }).replace(/\\s+/g, "");
       console.log("SUBNETSIGNATURE", message);

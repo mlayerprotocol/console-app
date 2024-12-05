@@ -15,4 +15,5 @@ export interface MainData {
   event_count: number | bigint;
   total_events_value: number | bigint;
   message_cost: number | bigint;
+  agentC: number | bigint;
 }

@@ -35,11 +35,14 @@ interface NewHomeStatCardOne {
   title: string;
   amount: string;
   icon?: ReactNode;
+  amount2?: string;
+  title2?: string;
 }
 export const NewHomeStatCardOne = (props: NewHomeStatCardOne) => {
-  const { title, amount, icon } = props;
+  const { title, amount, amount2, title2, icon } = props;
   return (
     <>
+      <div className="flex flex-row gap-3 justify-between">
       <div className="flex flex-col gap-3">
         <div className="flex gap-2">
           {icon ?? <HeroIcons.UserIcon className="ml-2 h-[18px] " />}
@@ -49,6 +52,17 @@ export const NewHomeStatCardOne = (props: NewHomeStatCardOne) => {
           {amount === "" ? <Spin size="small" /> : amount}
         </span>
       </div>
+      {!!title2 && <div className="flex flex-col gap-3">
+          <div className="flex gap-2 justify-end">
+          {<span className="text-[#AEB9E1] text-xs">{title2}</span>}
+          {icon ?? <HeroIcons.DevicePhoneMobileIcon className="ml-2 h-[18px] " />}
+         
+        </div>
+        <span className="font-bold text-2xl dark:text-white flex justify-end">
+          {amount2 === "" ? <Spin size="small" /> : amount2}
+        </span>
+        </div>}
+        </div>
     </>
   );
 };

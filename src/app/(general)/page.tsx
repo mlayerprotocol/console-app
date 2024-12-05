@@ -55,7 +55,7 @@ console.log('BLOCKSTATA', blockStatsList)
   useEffect(() => {
     intervalId = setInterval(() => {
       setToggleGroupStats?.((old) => !old);
-    }, 2000);
+    }, 5000);
 
     return () => {
       clearInterval(intervalId);
@@ -68,9 +68,12 @@ console.log('BLOCKSTATA', blockStatsList)
           <NewHomeStatCardOne
             title="Total Accounts"
             amount={`${mainStatsData?.data.accounts ?? ""}`}
-            icon={<HeroIcons.UserIcon className="h-[18px] !text-[#AEB9E1] " />}
+            title2="Agents"
+            amount2={`${mainStatsData?.data.agentC ?? ""}`}
+            icon={<HeroIcons.DevicePhoneMobileIcon className="h-[18px] !text-[#AEB9E1] " />}
           />
         </Card>
+        
         <Card className="col-span-12 md:col-span-6 lg:col-span-3">
           <NewHomeStatCardOne
             title="Total Events"
@@ -83,7 +86,7 @@ console.log('BLOCKSTATA', blockStatsList)
         <Card className="col-span-12 md:col-span-6 lg:col-span-3">
           <HomeStatCardTwo
             title="TVL"
-            amount={`${mainStatsData?.data.tvl || 0} MLT`}
+            amount={`${ethers.formatEther(String(mainStatsData?.data.tvl ?? "0"))} MLT`}
             offset={`${currencyFormat(0)}`}
             icon={
               <HeroIcons.BarsArrowUpIcon className="h-[18px] !text-[#AEB9E1] " />
