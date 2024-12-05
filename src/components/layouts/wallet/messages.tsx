@@ -57,7 +57,7 @@ export const Messages = (props: MessagesProps) => {
         message: msg.d,
         id: msg.id,
         agent: msg.agt,
-        date: moment(Date.parse(msg.CreatedAt)).fromNow(),
+        date: moment(new Date(msg.ets)).fromNow(),
       };
     });
   }, [selectedMessagesTopicId, messagesList]);

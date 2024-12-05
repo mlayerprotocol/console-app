@@ -116,7 +116,7 @@ export const Settings = (props: SettingsProps) => {
               name="ref"
               rules={[{ required: true, message: "Reference Id is required" }]}
             >
-              <Input placeholder="e.g. unique id or code" />
+              <Input placeholder="e.g com.example.app (no space)" />
             </Form.Item>
             <Form.Item
               label={`Name: `}
@@ -133,7 +133,7 @@ export const Settings = (props: SettingsProps) => {
                 { required: true, message: "Please select an auth privilege!" },
               ]}
             >
-              <Select defaultValue={AuthorizationPrivilege.Standard}>
+              <Select defaultValue={AuthorizationPrivilege.Member}>
                 {Object.keys(AuthorizationPrivilege)
                   .filter((d) => isNaN(parseInt(d)))
                   .map((val, index) => {

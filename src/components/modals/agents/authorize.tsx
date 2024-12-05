@@ -28,6 +28,7 @@ export const AuthorizeAgent = (props: AuthorizeAgentProps) => {
     selectedAgent,
     setSelectedAgent,
     authorizeAgent,
+    selectedSubnetId,
     loaders,
   } = useContext(WalletContext);
   const {
@@ -99,9 +100,12 @@ export const AuthorizeAgent = (props: AuthorizeAgentProps) => {
             onFinish={(data) => {
               const keyPair: AddressData =
                 agents[data["address"] ?? 0] ?? updateAddressData;
+            
               const days: number = data["duration"];
               const previledge: AuthorizationPrivilege = data["privi"];
-              authorizeAgent?.(keyPair, days, previledge).then(o => {
+              console.log("AGGETNNNNNN",  authorizeAgent)
+              authorizeAgent(keyPair, days, previledge, updateAddressData?.subnetId).then(o => {
+               
                 if (!selectedAgent || selectedAgent =='') {
                   setSelectedAgent?.(keyPair.address)
                 }
@@ -125,7 +129,7 @@ export const AuthorizeAgent = (props: AuthorizeAgentProps) => {
               {!updateAddressData && (
                 <Select>
                   {agents?.map((kp, index) => {
-                    const authenticationData = authenticationList?.data.find(
+                    const authenticationData = (authenticationList?.data ?? []).find(
                       (item) => item.agt == kp.address
                     );
                     if (authenticationData) return null;

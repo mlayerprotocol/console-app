@@ -1108,10 +1108,10 @@
     semver "^7.5.4"
     uuid "^9.0.1"
 
-"@mlayerprotocol/core@^1.4.0":
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/@mlayerprotocol/core/-/core-1.4.0.tgz#994311ca3c23656fe4a9098ffdb79ee1d5bc6ff1"
-  integrity sha512-BPpz/7H6+mlt+Vdee1A6zfzHVQ5qvIA8tMZfCtKKUjJ9ZqUidUVDY+Li2TiECmDHAbX94VBkSvJplo0NPZ7P1Q==
+"@mlayerprotocol/core@^1.4.7":
+  version "1.4.7"
+  resolved "https://registry.yarnpkg.com/@mlayerprotocol/core/-/core-1.4.7.tgz#bc308f58213c2a6b3bb4ffd2f25dd72f05d9a580"
+  integrity sha512-hmsWzva0LS8EkWKEBH9WrTHAp0gR943VCddxp4aCnJJ/bKwA6KFg4IMuRHjc34GpIMwbRht7dO3b6Zs6/j2o1A==
   dependencies:
     "@cosmjs/crypto" "^0.32.3"
     "@types/nanoid" "^3.0.0"
@@ -1122,7 +1122,7 @@
     browserify-fs "^1.0.0"
     buffer "^6.0.3"
     crypto-browserify "^3.12.0"
-    dotenv "^16.0.3"
+    dotenv "^16.4.5"
     ethers "^6.10.0"
     https-browserify "^1.0.0"
     jayson "^4.1.2"
@@ -4417,7 +4417,7 @@ domain-browser@^1.2.0:
   resolved "https://registry.yarnpkg.com/domain-browser/-/domain-browser-1.2.0.tgz#3d31f50191a6749dd1375a7f522e823d42e54eda"
   integrity sha512-jnjyiM6eRyZl2H+W8Q/zLMA481hzi0eszAaBUzIVnmYVDBbnLxVNnfu1HgEBvCbL+71FrxMl3E6lpKH7Ge3OXA==
 
-dotenv@^16.0.3:
+dotenv@^16.4.5:
   version "16.4.5"
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.4.5.tgz#cdd3b3b604cb327e286b4762e13502f717cb099f"
   integrity sha512-ZmdL2rui+eB2YwhsWzjInR8LldtZHGDoQ1ugH85ppHKwpUHL7j7rN0Ti9NCnGiQbhaZ11FpR+7ao1dNsmduNUg==

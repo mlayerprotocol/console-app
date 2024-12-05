@@ -77,7 +77,7 @@ export const Topics = (props: TopicsProps) => {
           <span className=" dark:text-white text-sm">Topics</span>
           <HeroIcons.InformationCircleIcon className="h-[16px] dark:!text-white " />
         </div>
-        <span className="dark:text-white text-sm bg-secondaryBg p-3 max-w-[415px]">
+        <span className="dark:text-slate-400 text-xs bg-secondaryBg p-3 max-w-[415px]">
           Topics are communication channels. Every subscriber to a topic
           receives the data/messages sent to that topic.{" "}
           <a href={INFO_LINKS.topicInfo} target="_blank">

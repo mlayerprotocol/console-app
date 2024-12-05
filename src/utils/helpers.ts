@@ -65,3 +65,11 @@ export async function makeRequest(
     return undefined;
   }
 }
+
+export function uuidToHexString(uuid: string): string {
+  return `0x${uuid?.replaceAll("-", "")}`;
+}
+
+export function delay(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}

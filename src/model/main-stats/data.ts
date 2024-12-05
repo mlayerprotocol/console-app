@@ -11,7 +11,9 @@ export interface Meta {
 
 export interface MainData {
   accounts: number | bigint;
-  topic_balance: number | bigint;
-  messages: number | bigint;
+  tvl: number | bigint;
+  event_count: number | bigint;
+  total_events_value: number | bigint;
   message_cost: number | bigint;
+  agentC: number | bigint;
 }

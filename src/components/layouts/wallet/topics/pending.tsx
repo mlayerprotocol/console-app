@@ -159,7 +159,7 @@ export const PendingTopics = (props: PendingTopicsProps) => {
                   authorizeAgent?.(
                     agent,
                     0,
-                    AuthorizationPrivilege.Standard,
+                    AuthorizationPrivilege.Member,
                     record.snet
                   ).then((e) => {
                     subcribeToTopic?.(agent, {
@@ -197,7 +197,7 @@ export const PendingTopics = (props: PendingTopicsProps) => {
                   authorizeAgent?.(
                     agent,
                     0,
-                    AuthorizationPrivilege.Basic,
+                    AuthorizationPrivilege.Guest,
                     record.snet
                   ).then((e) => {
                     subcribeToTopic?.(agent, {
