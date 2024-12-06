@@ -122,7 +122,7 @@ interface WalletContextValues {
   subscriberTopicList: Record<string, SubscriberListModel> | undefined;
   recordTopicList: Record<string, TopicListModel> | undefined;
   disconnectKeplr?: () => Promise<void>;
-  authorizeAgent: (
+  authorizeAgent?: (
     agent: AddressData,
     days: number | undefined,
     privilege: AuthorizationPrivilege | undefined,
@@ -1098,7 +1098,7 @@ export const WalletContextProvider = ({
       subscribe.role = rol;
       subscribe.subnet = subnetId;
       subscribe.topic = topicId;
-      subscribe.ref = ref;
+      subscribe.ref = ref ?? '';
       subscribe.subscriber = Address.fromString(sub ?? account);
       //   subscribe.agent = "Bitcoin world";
       //   subscribe.reference = "898989";
