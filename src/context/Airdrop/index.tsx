@@ -55,7 +55,7 @@ export const AirDropContextProvider = ({
   //     endIndex: 5,
   //   },
   //   {
-  //     title: "Chapter 3 - mLayer Studio",
+  //     title: "Chapter 3 - mLayer Console",
   //     subTitle: "Points Earned - 0 out of 2500",
   //     startIndex: 5,
   //     endIndex: 9,

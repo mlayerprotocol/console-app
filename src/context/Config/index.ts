@@ -9,10 +9,10 @@ export const appUrl: string =
   process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
 
 export const metadata = {
-  name: "mlayerStudio",
-  description: "MLayer studi app",
+  name: 'mlayerConsole',
+  description: 'MLayer studio app',
   url: appUrl, // origin must match your domain & subdomain
-  icons: ["/logo.png"],
+  icons: ['/logo.png'],
 };
 
 export const chains = [

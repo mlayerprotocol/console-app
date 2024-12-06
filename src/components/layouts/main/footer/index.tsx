@@ -26,7 +26,7 @@ export const AppFooter = (props: AppFooterProps) => {
             <div className="flex flex-col">
               <a href="/">
                 <span className="text-2xl font-bold font-assistant dark:text-white">
-                  mlStudio
+                  mlConsole
                 </span>
               </a>
               <span className=" text-sm text-opacity-0">by Fero Tech</span>

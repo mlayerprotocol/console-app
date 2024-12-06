@@ -37,7 +37,7 @@ interface AppHeaderProps {
 }
 export const AppHeader = (props: AppHeaderProps) => {
   const {
-    headerText = "STUDIO",
+    headerText = "CONSOLE",
     showMobileMenu,
     setShowMobileMenu,
     showAuthenticationModal,
