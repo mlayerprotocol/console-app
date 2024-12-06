@@ -21,7 +21,7 @@ export default function ConnectWalletGuard({
           <div className="flex flex-col items-center justify-center gap-6">
             <div className="space-y-2 text-center">
               <h1 className="text-3xl font-bold text-white">
-                Welcome to MLayer&#39;s Studio App
+                Welcome to MLayer&#39;s Developer Console
               </h1>
               <p className="text-lg text-white/80">
                 Connect your wallet to create and manage your app&#39;s subnet.

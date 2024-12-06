@@ -48,7 +48,7 @@ export const MainAuth = (props: MainAuthProps) => {
             transition={{ duration: 2 }}
             className="text-[32px]"
           >
-            Welcome to mLayer studio!
+            Welcome to MLayer developer console!
           </motion.span>
         )}
         {page == 1 && (
@@ -62,7 +62,7 @@ export const MainAuth = (props: MainAuthProps) => {
           </motion.span>
         )}
         <span className="text-gray-500 mb-11">
-          mLayer&apos;s studio allows developer create and manage their subnet applications.
+          mLayer&apos;s developer console allows developer create and manage their subnet applications.
         </span>
 
         {/* <SocialAuth /> */}
