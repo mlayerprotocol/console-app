@@ -198,14 +198,25 @@ export const AirDropv2 = (props: AirDropv2Props) => {
         if (pointsDetail?.data?.account?.socials?.discord) {
           // setLoaders((old) => ({ ...old, [obj.title]: true }));
           if (window != null) {
-            window.open(FOLLOW_DISCORD_HTTP, "_blank");
+            let serverUrl = FOLLOW_DISCORD_HTTP;
+            let name = obj.activity?.data;
+            try {
+                const parsed = JSON.parse(obj.activity?.data || "{}")
+              name = parsed.name;
+              serverUrl = parsed.url
+              } catch (e) {
+                
+              }
+           
+            window.open(serverUrl, "_blank");
             const cb = () => {
+              
               makeRequest(MIDDLEWARE_HTTP_URLS.discord.verify.url, {
                 method: MIDDLEWARE_HTTP_URLS.discord.verify.method,
                 body: JSON.stringify({
                   projectId: obj.activity?.projectId,
                   activityId: obj.activity?.id,
-                  username: obj.activity?.data,
+                  username: name,
                 }),
                 headers: {
                   "x-signed-data": pointsDetail.data.token,
@@ -276,8 +287,9 @@ export const AirDropv2 = (props: AirDropv2Props) => {
         }
         break;
       case "discord-follow":
+        let name = obj.activity?.data;
         if (pointsDetail?.data?.account?.socials?.discord) {
-          return "Click to join @" + obj.activity?.data?.toLocaleLowerCase();
+          return "Click to join server";
         }
         break;
     }
@@ -342,7 +354,7 @@ export const AirDropv2 = (props: AirDropv2Props) => {
           <Fragment key={i}>
             <div className="flex items-center gap-2">
               <div className="flex flex-col w-1/2">
-                <span className="text-lg dark:text-white flex gap-2 items-center">
+                <span className="text-lg dark:text-grey-200 flex gap-2 items-center">
                   <span>{e.title}</span>
                   {showCheck && (
                     <HeroIcons.CheckCircleIcon className="h-[20px] !text-green-500" />
@@ -378,7 +390,7 @@ export const AirDropv2 = (props: AirDropv2Props) => {
                           alwaysConnect: true,
                         });
                       }}
-                      className="text-sm text-green-500 cursor-pointer"
+                      className="text-sm text-green-700 cursor-pointer"
                     >
                       {loaders[e.title] ? (
                         <Spin />
