@@ -72,8 +72,8 @@ export const AirDrop = (props: AirDropProps) => {
   }, [pointsList]);
 
   useEffect(() => {
-    const referrer = searchParams.get("referrer");
-    console.log({ referrer });
+    const referrer = searchParams.get("uid");
+   
     if (referrer && connectedWallet) {
       //
       makeRequest(MIDDLEWARE_HTTP_URLS.connect.url, {
