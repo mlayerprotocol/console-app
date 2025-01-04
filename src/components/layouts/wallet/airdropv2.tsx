@@ -202,10 +202,13 @@ export const AirDropv2 = (props: AirDropv2Props) => {
             let name = obj.activity?.data;
             try {
                 const parsed = JSON.parse(obj.activity?.data || "{}")
-              name = parsed.name;
-              serverUrl = parsed.url
+                if (parsed.name) {
+                  name = parsed.name;
+                  serverUrl = parsed.url
+                }
+            
               } catch (e) {
-                
+                console.log("EEE", e)
               }
            
             window.open(serverUrl, "_blank");
